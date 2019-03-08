@@ -8,12 +8,12 @@ import { SnapshotBase, AggregateBase } from "./types.base"
  * @param resultsCount?	Total number of results generated
  */
 export class AggregateResponse {
-    ticker: string;
-    status: string;
-    adjusted: boolean;
-    queryCount?: number;
-    resultsCount?: number;
-    results: Array<Aggregate>;
+  ticker: string;
+  status: string;
+  adjusted: boolean;
+  queryCount?: number;
+  resultsCount?: number;
+  results: Array<Aggregate>;
 }
 
 /**
@@ -22,10 +22,10 @@ export class AggregateResponse {
  * @param n?	Number of items in aggregate window
  */
 export class Aggregate extends AggregateBase {
-    T?: string;
-    k: number;
-    t: number | undefined;
-    n?: number;
+  T?: string;
+  k: number;
+  t: number | undefined;
+  n?: number;
 }
 
 /**
@@ -40,15 +40,15 @@ export class Aggregate extends AggregateBase {
  * @param updated	Last time the ratings for this symbol were updated.
  */
 export class AnalystRatings {
-    symbol: string;
-    analysts: number;
-    change: number;
-    strongBuy: RatingSection;
-    buy: RatingSection;
-    hold: RatingSection;
-    sell: RatingSection;
-    strongSell: RatingSection;
-    updated: Date;
+  symbol: string;
+  analysts: number;
+  change: number;
+  strongBuy: RatingSection;
+  buy: RatingSection;
+  hold: RatingSection;
+  sell: RatingSection;
+  strongSell: RatingSection;
+  updated: Date;
 }
 
 /**
@@ -73,28 +73,28 @@ export class AnalystRatings {
  * @param updated	Last time this company record was updated.
  */
 export class Company {
-    logo?: string;
-    exchange: string;
-    name: string;
-    symbol: StockSymbol;
-    listdate?: string;
-    cik?: string;
-    bloomberg?: string;
-    figi?: string;
-    lei?: string;
-    sic?: number;
-    country?: string;
-    industry?: string;
-    sector?: string;
-    marketcap?: number;
-    employees?: number;
-    phone?: string;
-    ceo?: string;
-    url?: string;
-    description: string;
-    similar?: Array<StockSymbol>;
-    tags?: Array<string>;
-    updated: Date;
+  logo?: string;
+  exchange: string;
+  name: string;
+  symbol: StockSymbol;
+  listdate?: string;
+  cik?: string;
+  bloomberg?: string;
+  figi?: string;
+  lei?: string;
+  sic?: number;
+  country?: string;
+  industry?: string;
+  sector?: string;
+  marketcap?: number;
+  employees?: number;
+  phone?: string;
+  ceo?: string;
+  url?: string;
+  description: string;
+  similar?: Array<StockSymbol>;
+  tags?: Array<string>;
+  updated: Date;
 }
 
 /**
@@ -105,20 +105,20 @@ export class Company {
  * @param url	URL of this exchange
  */
 export class CryptoExchange {
-    id: number;
-    type: CryptoExchange.TypeEnum;
-    market: CryptoExchange.MarketEnum;
-    name: string;
-    url: string;
+  id: number;
+  type: CryptoExchange.TypeEnum;
+  market: CryptoExchange.MarketEnum;
+  name: string;
+  url: string;
 }
 
 export namespace CryptoExchange {
-    export enum TypeEnum {
-        Exchange = <any> 'exchange'
-    }
-    export enum MarketEnum {
-        Crypto = <any> 'crypto'
-    }
+  export enum TypeEnum {
+    Exchange = <any> 'exchange'
+  }
+  export enum MarketEnum {
+    Crypto = <any> 'crypto'
+  }
 }
 
 export class CryptoSnapshotAgg extends SnapshotBase {
@@ -129,8 +129,8 @@ export class CryptoSnapshotAgg extends SnapshotBase {
  * @param x	Exchange to Size of this price level
  */
 export class CryptoSnapshotBookItem {
-    p: number;
-    x: any;
+  p: number;
+  x: any;
 }
 
 
@@ -141,14 +141,14 @@ export class CryptoSnapshotBookItem {
  * @param updated	Last Updated timestamp
  */
 export class CryptoSnapshotTicker {
-    ticker: string;
-    day: CryptoSnapshotAgg;
-    lastTrade: CryptoTickJson;
-    min: CryptoSnapshotAgg;
-    prevDay: CryptoSnapshotAgg;
-    todaysChange: number;
-    todaysChangePerc: number;
-    updated: number;
+  ticker: string;
+  day: CryptoSnapshotAgg;
+  lastTrade: CryptoTickJson;
+  min: CryptoSnapshotAgg;
+  prevDay: CryptoSnapshotAgg;
+  todaysChange: number;
+  todaysChangePerc: number;
+  updated: number;
 }
 
 /**
@@ -161,13 +161,13 @@ export class CryptoSnapshotTicker {
  * @param updated	Last Updated timestamp
  */
 export class CryptoSnapshotTickerBook {
-    ticker: string;
-    bids?: Array<CryptoSnapshotBookItem>;
-    asks?: Array<CryptoSnapshotBookItem>;
-    bidCount?: number;
-    askCount?: number;
-    spread?: number;
-    updated: number;
+  ticker: string;
+  bids?: Array<CryptoSnapshotBookItem>;
+  asks?: Array<CryptoSnapshotBookItem>;
+  bidCount?: number;
+  askCount?: number;
+  spread?: number;
+  updated: number;
 }
 
 /**
@@ -178,11 +178,11 @@ export class CryptoSnapshotTickerBook {
  * @param timestamp	Timestamp of this trade
  */
 export class CryptoTick {
-    price: number;
-    size: number;
-    exchange: number;
-    conditions: Array<number>;
-    timestamp: number;
+  price: number;
+  size: number;
+  exchange: number;
+  conditions: Array<number>;
+  timestamp: number;
 }
 
 /**
@@ -193,11 +193,11 @@ export class CryptoTick {
  * @param t	Timestamp of this trade
 */
 export class CryptoTickJson {
-    p: number;
-    s: number;
-    x: number;
-    c: Array<number>;
-    t: number;
+  p: number;
+  s: number;
+  x: number;
+  c: Array<number>;
+  t: number;
 }
 
 /**
@@ -213,25 +213,25 @@ export class CryptoTickJson {
  * @param flag?	Refers to the dividend flag, if set<br/> FI = Final dividend, div ends or instrument ends<br/> LI = Liquidation, instrument liquidates<br/> PR = Proceeds of a sale of rights or shares<br/> RE = Redemption of rights<br/> AC = Accrued dividend<br/> AR = Payment in arrears<br/> AD = Additional payment<br/> EX = Extra payment<br/> SP = Special dividend<br/> YE = Year end<br/> UR = Unknown rate<br/> SU = Regular dividend is suspended 
 */
 export class Dividend {
-    symbol: StockSymbol;
-    type: string;
-    exDate: Date;
-    paymentDate?: Date;
-    recordDate?: Date;
-    declaredDate?: Date;
-    amount: number;
-    qualified?: Dividend.QualifiedEnum;
-    flag?: string;
+  symbol: StockSymbol;
+  type: string;
+  exDate: Date;
+  paymentDate?: Date;
+  recordDate?: Date;
+  declaredDate?: Date;
+  amount: number;
+  qualified?: Dividend.QualifiedEnum;
+  flag?: string;
 }
 
 // TODO what is this
 export namespace Dividend {
-    export enum QualifiedEnum {
-        P = <any> 'P',
-        Q = <any> 'Q',
-        N = <any> 'N',
-        Null = <any> null // FIXME
-    }
+  export enum QualifiedEnum {
+    P = <any> 'P',
+    Q = <any> 'Q',
+    N = <any> 'N',
+    Null = <any> null // FIXME
+  }
 }
 
 /**
@@ -240,20 +240,20 @@ export namespace Dividend {
  * @param ePSReportDateStr	Report date as non date format
 */
 export class Earning {
-    symbol: string;
-    ePSReportDate: Date;
-    ePSReportDateStr: string;
-    fiscalPeriod?: string;
-    fiscalEndDate?: Date;
-    actualEPS?: number;
-    consensusEPS?: number;
-    estimatedEPS?: number;
-    announceTime?: string;
-    numberOfEstimates?: number;
-    ePSSurpriseDollar?: number;
-    yearAgo?: number;
-    yearAgoChangePercent?: number;
-    estimatedChangePercent?: number;
+  symbol: string;
+  ePSReportDate: Date;
+  ePSReportDateStr: string;
+  fiscalPeriod?: string;
+  fiscalEndDate?: Date;
+  actualEPS?: number;
+  consensusEPS?: number;
+  estimatedEPS?: number;
+  announceTime?: string;
+  numberOfEstimates?: number;
+  ePSSurpriseDollar?: number;
+  yearAgo?: number;
+  yearAgoChangePercent?: number;
+  estimatedChangePercent?: number;
 }
 
 /**
@@ -265,23 +265,23 @@ export class Earning {
  * @param tape	Tape id of the exchange
 */
 export class Exchange {
-    id: number;
-    type: Exchange.TypeEnum;
-    market: Exchange.MarketEnum;
-    mic: string;
-    name: string;
-    tape: string;
+  id: number;
+  type: Exchange.TypeEnum;
+  market: Exchange.MarketEnum;
+  mic: string;
+  name: string;
+  tape: string;
 }
 
 export namespace Exchange {
-    export enum TypeEnum {
-        TRF = <any> 'TRF',
-        Exchange = <any> 'exchange'
-    }
-    export enum MarketEnum {
-        Equities = <any> 'equities',
-        Indecies = <any> 'indecies'
-    }
+  export enum TypeEnum {
+    TRF = <any> 'TRF',
+    Exchange = <any> 'exchange'
+  }
+  export enum MarketEnum {
+    Equities = <any> 'equities',
+    Indecies = <any> 'indecies'
+  }
 }
 
 /**
@@ -290,28 +290,28 @@ export namespace Exchange {
  * @param reportDateStr	Report date as non date format
 */
 export class Financial {
-    symbol: string;
-    reportDate: Date;
-    reportDateStr: string;
-    grossProfit?: number;
-    costOfRevenue?: number;
-    operatingRevenue?: number;
-    totalRevenue?: number;
-    operatingIncome?: number;
-    netIncome?: number;
-    researchAndDevelopment?: number;
-    operatingExpense?: number;
-    currentAssets?: number;
-    totalAssets?: number;
-    totalLiabilities?: number;
-    currentCash?: number;
-    currentDebt?: number;
-    totalCash?: number;
-    totalDebt?: number;
-    shareholderEquity?: number;
-    cashChange?: number;
-    cashFlow?: number;
-    operatingGainsLosses?: number;
+  symbol: string;
+  reportDate: Date;
+  reportDateStr: string;
+  grossProfit?: number;
+  costOfRevenue?: number;
+  operatingRevenue?: number;
+  totalRevenue?: number;
+  operatingIncome?: number;
+  netIncome?: number;
+  researchAndDevelopment?: number;
+  operatingExpense?: number;
+  currentAssets?: number;
+  totalAssets?: number;
+  totalLiabilities?: number;
+  currentCash?: number;
+  currentDebt?: number;
+  totalCash?: number;
+  totalDebt?: number;
+  shareholderEquity?: number;
+  cashChange?: number;
+  cashFlow?: number;
+  operatingGainsLosses?: number;
 }
 
 /**
@@ -320,9 +320,9 @@ export class Financial {
  * @param t	Timestamp of this trade
 */
 export class Forex {
-    a: number;
-    b: number;
-    t: number;
+  a: number;
+  b: number;
+  t: number;
 }
 
 export class ForexAggregate extends AggregateBase {
@@ -335,14 +335,14 @@ export class ForexSnapshotAgg extends SnapshotBase {
  * @param ticker	Ticker of the object
 */
 export class ForexSnapshotTicker {
-    ticker: string;
-    day: ForexSnapshotAgg;
-    lastTrade: Forex;
-    min: ForexSnapshotAgg;
-    prevDay: ForexSnapshotAgg;
-    todaysChange: number;
-    todaysChangePerc: number;
-    updated: number;
+  ticker: string;
+  day: ForexSnapshotAgg;
+  lastTrade: Forex;
+  min: ForexSnapshotAgg;
+  prevDay: ForexSnapshotAgg;
+  todaysChange: number;
+  todaysChangePerc: number;
+  updated: number;
 }
 
 /**
@@ -356,14 +356,14 @@ export class ForexSnapshotTicker {
  * @param timestamp	Timestamp of this trade
 */
 export class HistTrade {
-    condition1: number;
-    condition2: number;
-    condition3: number;
-    condition4: number;
-    exchange: string;
-    price: number;
-    size: number;
-    timestamp: string;
+  condition1: number;
+  condition2: number;
+  condition3: number;
+  condition4: number;
+  exchange: string;
+  price: number;
+  size: number;
+  timestamp: string;
 }
 
 /**
@@ -373,10 +373,10 @@ export class HistTrade {
  * @param timestamp	Timestamp of this trade
 */
 export class LastForexQuote {
-    ask: number;
-    bid: number;
-    exchange: number;
-    timestamp: number;
+  ask: number;
+  bid: number;
+  exchange: number;
+  timestamp: number;
 }
 
 /**
@@ -385,9 +385,9 @@ export class LastForexQuote {
  * @param timestamp	Timestamp of this trade
 */
 export class LastForexTrade {
-    price: number;
-    exchange: number;
-    timestamp: number;
+  price: number;
+  exchange: number;
+  timestamp: number;
 }
 
 /**
@@ -400,13 +400,13 @@ export class LastForexTrade {
  * @param timestamp	Timestamp of this trade
 */
 export class LastQuote {
-    askprice: number;
-    asksize: number;
-    askexchange: number;
-    bidprice: number;
-    bidsize: number;
-    bidexchange: number;
-    timestamp: number;
+  askprice: number;
+  asksize: number;
+  askexchange: number;
+  bidprice: number;
+  bidsize: number;
+  bidexchange: number;
+  timestamp: number;
 }
 
 /**
@@ -420,14 +420,14 @@ export class LastQuote {
  * @param timestamp	Timestamp of this trade
 */
 export class LastTrade {
-    price: number;
-    size: number;
-    exchange: number;
-    cond1: number;
-    cond2: number;
-    cond3: number;
-    cond4: number;
-    timestamp: number;
+  price: number;
+  size: number;
+  exchange: number;
+  cond1: number;
+  cond2: number;
+  cond3: number;
+  cond4: number;
+  timestamp: number;
 }
 
 /**
@@ -439,27 +439,27 @@ export class LastTrade {
  * @param close?	Market close time on this holiday ( if it's not closed )
 */
 export class MarketHoliday {
-    exchange: MarketHoliday.ExchangeEnum;
-    name: string;
-    status: MarketHoliday.StatusEnum;
-    date: Date;
-    open?: Date;
-    close?: Date;
+  exchange: MarketHoliday.ExchangeEnum;
+  name: string;
+  status: MarketHoliday.StatusEnum;
+  date: Date;
+  open?: Date;
+  close?: Date;
 }
 
 export namespace MarketHoliday {
-    export enum ExchangeEnum {
-        NYSE = <any> 'NYSE',
-        NASDAQ = <any> 'NASDAQ',
-        OTC = <any> 'OTC'
-    }
-    export enum StatusEnum {
-        Closed = <any> 'closed',
-        EarlyClose = <any> 'early-close',
-        LateClose = <any> 'late-close',
-        EarlyOpen = <any> 'early-open',
-        LateOpen = <any> 'late-open'
-    }
+  export enum ExchangeEnum {
+    NYSE = <any> 'NYSE',
+    NASDAQ = <any> 'NASDAQ',
+    OTC = <any> 'OTC'
+  }
+  export enum StatusEnum {
+    Closed = <any> 'closed',
+    EarlyClose = <any> 'early-close',
+    LateClose = <any> 'late-close',
+    EarlyOpen = <any> 'early-open',
+    LateOpen = <any> 'late-open'
+  }
 }
 
 /**
@@ -467,18 +467,18 @@ export namespace MarketHoliday {
  * @param serverTime	Current time of the server
 */
 export class MarketStatus {
-    market: MarketStatus.MarketEnum;
-    serverTime: Date;
-    exchanges: MarketStatusExchanges;
-    currencies?: MarketStatusCurrencies;
+  market: MarketStatus.MarketEnum;
+  serverTime: Date;
+  exchanges: MarketStatusExchanges;
+  currencies?: MarketStatusCurrencies;
 }
 
 export namespace MarketStatus {
-    export enum MarketEnum {
-        Open = <any> 'open',
-        Closed = <any> 'closed',
-        ExtendedHours = <any> 'extended-hours'
-    }
+  export enum MarketEnum {
+    Open = <any> 'open',
+    Closed = <any> 'closed',
+    ExtendedHours = <any> 'extended-hours'
+  }
 }
 
 /**
@@ -486,19 +486,19 @@ export namespace MarketStatus {
  * @param crypto?	Status of the crypto market
 */
 export class MarketStatusCurrencies {
-    fx?: MarketStatusCurrencies.FxEnum;
-    crypto?: MarketStatusCurrencies.CryptoEnum;
+  fx?: MarketStatusCurrencies.FxEnum;
+  crypto?: MarketStatusCurrencies.CryptoEnum;
 }
 
 export namespace MarketStatusCurrencies {
-    export enum FxEnum {
-        Open = <any> 'open',
-        Closed = <any> 'closed'
-    }
-    export enum CryptoEnum {
-        Open = <any> 'open',
-        Closed = <any> 'closed'
-    }
+  export enum FxEnum {
+    Open = <any> 'open',
+    Closed = <any> 'closed'
+  }
+  export enum CryptoEnum {
+    Open = <any> 'open',
+    Closed = <any> 'closed'
+  }
 }
 
 /**
@@ -507,32 +507,32 @@ export namespace MarketStatusCurrencies {
  * @param otc?	Status of the market as a whole
 */
 export class MarketStatusExchanges {
-    nyse?: MarketStatusExchanges.NyseEnum;
-    nasdaq?: MarketStatusExchanges.NasdaqEnum;
-    otc?: MarketStatusExchanges.OtcEnum;
+  nyse?: MarketStatusExchanges.NyseEnum;
+  nasdaq?: MarketStatusExchanges.NasdaqEnum;
+  otc?: MarketStatusExchanges.OtcEnum;
 }
 
 export namespace MarketStatusExchanges {
-    export enum NyseEnum {
-        Open = <any> 'open',
-        Closed = <any> 'closed',
-        ExtendedHours = <any> 'extended-hours'
-    }
-    export enum NasdaqEnum {
-        Open = <any> 'open',
-        Closed = <any> 'closed',
-        ExtendedHours = <any> 'extended-hours'
-    }
-    export enum OtcEnum {
-        Open = <any> 'open',
-        Closed = <any> 'closed',
-        ExtendedHours = <any> 'extended-hours'
-    }
+  export enum NyseEnum {
+    Open = <any> 'open',
+    Closed = <any> 'closed',
+    ExtendedHours = <any> 'extended-hours'
+  }
+  export enum NasdaqEnum {
+    Open = <any> 'open',
+    Closed = <any> 'closed',
+    ExtendedHours = <any> 'extended-hours'
+  }
+  export enum OtcEnum {
+    Open = <any> 'open',
+    Closed = <any> 'closed',
+    ExtendedHours = <any> 'extended-hours'
+  }
 }
 export class ModelError {
-    code?: number;
-    message?: string;
-    fields?: string;
+  code?: number;
+  message?: string;
+  fields?: string;
 }
 
 /**
@@ -544,14 +544,14 @@ export class ModelError {
  * @param timestamp	Timestamp of the article
 */
 export class News {
-    symbols: Array<StockSymbol>;
-    title: string;
-    url: string;
-    source: string;
-    summary: string;
-    image?: string;
-    timestamp: Date;
-    keywords?: Array<string>;
+  symbols: Array<StockSymbol>;
+  title: string;
+  url: string;
+  source: string;
+  summary: string;
+  image?: string;
+  timestamp: Date;
+  keywords?: Array<string>;
 }
 
 /**
@@ -565,14 +565,14 @@ export class News {
  * @param t	Timestamp of this trade
 */
 export class Quote {
-    c: number;
-    bE: string;
-    aE: string;
-    aP: number;
-    bP: number;
-    bS: number;
-    aS: number;
-    t: number;
+  c: number;
+  bE: string;
+  aE: string;
+  aP: number;
+  bP: number;
+  bS: number;
+  aS: number;
+  t: number;
 }
 
 /**
@@ -584,12 +584,12 @@ export class Quote {
  * @param month5?	Analyst Ratings at 5 month in the future
 */
 export class RatingSection {
-    current: number;
-    month1: number;
-    month2: number;
-    month3: number;
-    month4?: number;
-    month5?: number;
+  current: number;
+  month1: number;
+  month2: number;
+  month3: number;
+  month4?: number;
+  month5?: number;
 }
 
 /**
@@ -604,14 +604,14 @@ export class RatingSection {
  * @param forfactor	For factor of the split. Used to calculate the split ratio forfactor/tofactor = ratio (eg ½ = 0.5) 
 */
 export class Split {
-    ticker: TickerSymbol;
-    exDate: Date;
-    paymentDate: Date;
-    recordDate?: Date;
-    declaredDate?: Date;
-    ratio: number;
-    tofactor: number;
-    forfactor: number;
+  ticker: TickerSymbol;
+  exDate: Date;
+  paymentDate: Date;
+  recordDate?: Date;
+  declaredDate?: Date;
+  ratio: number;
+  tofactor: number;
+  forfactor: number;
 }
 
 /**
@@ -628,8 +628,8 @@ export class StocksSnapshotAgg extends SnapshotBase {
  * @param x	Exchange to Size of this price level
 */
 export class StocksSnapshotBookItem {
-    p: number;
-    x: any;
+  p: number;
+  x: any;
 }
 
 /**
@@ -638,14 +638,14 @@ export class StocksSnapshotBookItem {
  * @param updated	Last Updated timestamp
 */
 export class StocksSnapshotTicker {
-    ticker: string;
-    day: StocksSnapshotAgg;
-    lastTrade: Trade;
-    min: StocksSnapshotAgg;
-    prevDay: StocksSnapshotAgg;
-    todaysChange: number;
-    todaysChangePerc: number;
-    updated: number;
+  ticker: string;
+  day: StocksSnapshotAgg;
+  lastTrade: Trade;
+  min: StocksSnapshotAgg;
+  prevDay: StocksSnapshotAgg;
+  todaysChange: number;
+  todaysChangePerc: number;
+  updated: number;
 }
 
 /**
@@ -658,13 +658,13 @@ export class StocksSnapshotTicker {
  * @param updated	Last Updated timestamp
 */
 export class StocksSnapshotTickerBook {
-    ticker: string;
-    bids?: Array<StocksSnapshotBookItem>;
-    asks?: Array<StocksSnapshotBookItem>;
-    bidCount?: number;
-    askCount?: number;
-    spread?: number;
-    updated: number;
+  ticker: string;
+  bids?: Array<StocksSnapshotBookItem>;
+  asks?: Array<StocksSnapshotBookItem>;
+  bidCount?: number;
+  askCount?: number;
+  spread?: number;
+  updated: number;
 }
 
 /**
@@ -675,12 +675,12 @@ export class StocksSnapshotTickerBook {
  * @param isOTC	If the symbol is listed on the OTC Markets.
 */
 export class Symbol {
-    symbol: StockSymbol;
-    name: string;
-    type: string;
-    url: string;
-    updated: Date;
-    isOTC: boolean;
+  symbol: StockSymbol;
+  name: string;
+  type: string;
+  url: string;
+  updated: Date;
+  isOTC: boolean;
 }
 
 export class SymbolTypeMap {
@@ -698,17 +698,17 @@ export class SymbolTypeMap {
  * @param attrs?	Additional details about this ticker. No schema.
 */
 export class Ticker {
-    ticker: StockSymbol;
-    name: string;
-    market: string;
-    locale: string;
-    currency?: string;
-    active?: boolean;
-    primaryExch?: string;
-    url?: string;
-    updated: Date;
-    attrs?: any;
-    codes?: TickerCodes;
+  ticker: StockSymbol;
+  name: string;
+  market: string;
+  locale: string;
+  currency?: string;
+  active?: boolean;
+  primaryExch?: string;
+  url?: string;
+  updated: Date;
+  attrs?: any;
+  codes?: TickerCodes;
 }
 
 /**
@@ -721,11 +721,11 @@ export class Ticker {
  * @param figiuid?	Unique OpenFIGI ID number for this ticker
 */
 export class TickerCodes {
-    cik?: string;
-    figi?: string;
-    cfigi?: string;
-    scfigi?: string;
-    figiuid?: string;
+  cik?: string;
+  figi?: string;
+  cfigi?: string;
+  scfigi?: string;
+  figiuid?: string;
 }
 
 /**
@@ -745,12 +745,12 @@ export class TickerSymbol {
  * @param t	Timestamp of this trade
 */
 export class Trade {
-    c1: number;
-    c2: number;
-    c3: number;
-    c4: number;
-    e: string;
-    p: number;
-    s: number;
-    t: number;
+  c1: number;
+  c2: number;
+  c3: number;
+  c4: number;
+  e: string;
+  p: number;
+  s: number;
+  t: number;
 }

@@ -6,16 +6,16 @@
  * @param v	Volume
  */
 export class SnapshotBase {
-    c: number;
-    h: number;
-    l: number;
-    o: number;
-    v: number;
+  c: number;
+  h: number;
+  l: number;
+  o: number;
+  v: number;
 }
 
 /**
  * @param t	Timestamp of this aggregation
 */
 export class AggregateBase extends SnapshotBase {
-    t: number;
+  t: number;
 }
