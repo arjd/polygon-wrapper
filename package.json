@@ -4,21 +4,24 @@
   "description": "a typescript wrapper for the polygon.io api",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/arjd/polygonWrapper.git"
+  "type": "git",
+  "url": "git+https://github.com/arjd/polygonWrapper.git"
   },
   "keywords": [
-    "typescript",
-    "polygon.io",
-    "javascript"
+  "typescript",
+  "polygon.io",
+  "javascript"
   ],
   "author": "arjd",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/arjd/polygonWrapper/issues"
+  "url": "https://github.com/arjd/polygonWrapper/issues"
   },
-  "homepage": "https://github.com/arjd/polygonWrapper#readme"
+  "homepage": "https://github.com/arjd/polygonWrapper#readme",
+  "dependencies": {
+  "superagent": "^4.1.0"
+  }
 }
