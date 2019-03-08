@@ -1,4 +1,10 @@
-import { SnapshotBase, AggregateBase } from "./types.base"
+import {
+  Snapshot, Aggregate, Exchange
+} from "./types.base"
+import {
+  CryptoExchangeMarketEnum, CryptoExchangeTypeEnum, StockExchangeMarketEnum, StockExchangeTypeEnum,
+  DividendQualifiedEnum, MarketHolidayExchangeEnum, MarketHolidayStatusEnum, MarketStatusEnum, MarketStatusExtendedEnum
+} from "./types.enum"
 
 /**
  * @param ticker	Ticker symbol requested
@@ -21,7 +27,7 @@ export class AggregateResponse {
  * @param t?	Unix Msec Timestamp ( Start of Aggregate window )
  * @param n?	Number of items in aggregate window
  */
-export class Aggregate extends AggregateBase {
+export class ExtendedAggregate extends Aggregate {
   T?: string;
   k: number;
   t: number | undefined;
@@ -98,30 +104,30 @@ export class Company {
 }
 
 /**
- * @param id	ID of the exchange
- * @param type	Type of exchange feed
- * @param market	Market data type this exchange contains ( crypto only currently )
- * @param name	Name of the exchange
  * @param url	URL of this exchange
  */
-export class CryptoExchange {
-  id: number;
-  type: CryptoExchange.TypeEnum;
-  market: CryptoExchange.MarketEnum;
-  name: string;
+export class CryptoExchange extends Exchange {
+  type: CryptoExchangeTypeEnum;
+  market: CryptoExchangeMarketEnum;
   url: string;
 }
 
-export namespace CryptoExchange {
-  export enum TypeEnum {
-    Exchange = <any> 'exchange'
-  }
-  export enum MarketEnum {
-    Crypto = <any> 'crypto'
-  }
+/**
+ * @param id	ID of the exchange
+ * @param type	The type of exchange this is.<br/> - TRF = Trade Reporting Facility<br/> - exchange = Reporting exchange on the tape 
+ * @param market	Market data type this exchange contains
+ * @param mic	Market Identification Code
+ * @param name	Name of the exchange
+ * @param tape	Tape id of the exchange
+*/
+export class StockExchange extends Exchange {
+  type: StockExchangeTypeEnum;
+  market: StockExchangeMarketEnum;
+  mic: string;
+  tape: string;
 }
 
-export class CryptoSnapshotAgg extends SnapshotBase {
+export class CryptoSnapshotAggregation extends Snapshot {
 }
 
 /**
@@ -140,12 +146,12 @@ export class CryptoSnapshotBookItem {
  * @param todaysChangePerc	Percentage change since previous day
  * @param updated	Last Updated timestamp
  */
-export class CryptoSnapshotTicker {
+export class CryptoTicker {
   ticker: string;
-  day: CryptoSnapshotAgg;
-  lastTrade: CryptoTickJson;
-  min: CryptoSnapshotAgg;
-  prevDay: CryptoSnapshotAgg;
+  day: CryptoSnapshotAggregation;
+  lastTrade: CryptoTick;
+  min: CryptoSnapshotAggregation;
+  prevDay: CryptoSnapshotAggregation;
   todaysChange: number;
   todaysChangePerc: number;
   updated: number;
@@ -160,7 +166,7 @@ export class CryptoSnapshotTicker {
  * @param spread?	Difference between the best bid and the best ask price accross exchanges
  * @param updated	Last Updated timestamp
  */
-export class CryptoSnapshotTickerBook {
+export class CryptoBook {
   ticker: string;
   bids?: Array<CryptoSnapshotBookItem>;
   asks?: Array<CryptoSnapshotBookItem>;
@@ -192,12 +198,32 @@ export class CryptoTick {
  * @param c	Conditions of this trade
  * @param t	Timestamp of this trade
 */
-export class CryptoTickJson {
-  p: number;
-  s: number;
-  x: number;
-  c: Array<number>;
-  t: number;
+export class CryptoTickJson extends CryptoTick {
+  constructor(p: number, s: number, x: number, c: Array<number>, t: number) {
+    super();
+    this.price = p;
+    this.size = s;
+    this.exchange = x;
+    this.conditions = c;
+    this.timestamp = t;
+  }
+}
+
+export class CryptoHistoricPair {
+  day: string;
+  msLatency: number;
+  symbol: string;
+  ticks: Array<CryptoTickJson>
+}
+
+export class CryptoLastPair {
+  status: string;
+  symbol: string;
+  last: CryptoTick;
+  lastAverage: {
+    avg: number;
+    tradesAveraged?: number;
+  }
 }
 
 /**
@@ -214,24 +240,19 @@ export class CryptoTickJson {
 */
 export class Dividend {
   symbol: StockSymbol;
-  type: string;
+  type: string; // TODO enum
   exDate: Date;
   paymentDate?: Date;
   recordDate?: Date;
   declaredDate?: Date;
   amount: number;
-  qualified?: Dividend.QualifiedEnum;
+  qualified?: DividendQualifiedEnum;
   flag?: string;
 }
 
 // TODO what is this
 export namespace Dividend {
-  export enum QualifiedEnum {
-    P = <any> 'P',
-    Q = <any> 'Q',
-    N = <any> 'N',
-    Null = <any> null // FIXME
-  }
+
 }
 
 /**
@@ -254,34 +275,6 @@ export class Earning {
   yearAgo?: number;
   yearAgoChangePercent?: number;
   estimatedChangePercent?: number;
-}
-
-/**
- * @param id	ID of the exchange
- * @param type	The type of exchange this is.<br/> - TRF = Trade Reporting Facility<br/> - exchange = Reporting exchange on the tape 
- * @param market	Market data type this exchange contains
- * @param mic	Market Identification Code
- * @param name	Name of the exchange
- * @param tape	Tape id of the exchange
-*/
-export class Exchange {
-  id: number;
-  type: Exchange.TypeEnum;
-  market: Exchange.MarketEnum;
-  mic: string;
-  name: string;
-  tape: string;
-}
-
-export namespace Exchange {
-  export enum TypeEnum {
-    TRF = <any> 'TRF',
-    Exchange = <any> 'exchange'
-  }
-  export enum MarketEnum {
-    Equities = <any> 'equities',
-    Indecies = <any> 'indecies'
-  }
 }
 
 /**
@@ -325,10 +318,10 @@ export class Forex {
   t: number;
 }
 
-export class ForexAggregate extends AggregateBase {
+export class ForexAggregate extends Aggregate {
 }
 
-export class ForexSnapshotAgg extends SnapshotBase {
+export class ForexSnapshotAgg extends Snapshot {
 }
 
 /**
@@ -439,46 +432,24 @@ export class LastTrade {
  * @param close?	Market close time on this holiday ( if it's not closed )
 */
 export class MarketHoliday {
-  exchange: MarketHoliday.ExchangeEnum;
+  exchange: MarketHolidayExchangeEnum;
   name: string;
-  status: MarketHoliday.StatusEnum;
+  status: MarketHolidayStatusEnum;
   date: Date;
   open?: Date;
   close?: Date;
 }
 
-export namespace MarketHoliday {
-  export enum ExchangeEnum {
-    NYSE = <any> 'NYSE',
-    NASDAQ = <any> 'NASDAQ',
-    OTC = <any> 'OTC'
-  }
-  export enum StatusEnum {
-    Closed = <any> 'closed',
-    EarlyClose = <any> 'early-close',
-    LateClose = <any> 'late-close',
-    EarlyOpen = <any> 'early-open',
-    LateOpen = <any> 'late-open'
-  }
-}
 
 /**
  * @param market	Status of the market as a whole
  * @param serverTime	Current time of the server
 */
 export class MarketStatus {
-  market: MarketStatus.MarketEnum;
+  market: MarketStatusExtendedEnum;
   serverTime: Date;
   exchanges: MarketStatusExchanges;
   currencies?: MarketStatusCurrencies;
-}
-
-export namespace MarketStatus {
-  export enum MarketEnum {
-    Open = <any> 'open',
-    Closed = <any> 'closed',
-    ExtendedHours = <any> 'extended-hours'
-  }
 }
 
 /**
@@ -486,19 +457,8 @@ export namespace MarketStatus {
  * @param crypto?	Status of the crypto market
 */
 export class MarketStatusCurrencies {
-  fx?: MarketStatusCurrencies.FxEnum;
-  crypto?: MarketStatusCurrencies.CryptoEnum;
-}
-
-export namespace MarketStatusCurrencies {
-  export enum FxEnum {
-    Open = <any> 'open',
-    Closed = <any> 'closed'
-  }
-  export enum CryptoEnum {
-    Open = <any> 'open',
-    Closed = <any> 'closed'
-  }
+  fx?: MarketStatusEnum;
+  crypto?: MarketStatusEnum;
 }
 
 /**
@@ -507,27 +467,13 @@ export namespace MarketStatusCurrencies {
  * @param otc?	Status of the market as a whole
 */
 export class MarketStatusExchanges {
-  nyse?: MarketStatusExchanges.NyseEnum;
-  nasdaq?: MarketStatusExchanges.NasdaqEnum;
-  otc?: MarketStatusExchanges.OtcEnum;
+  nyse?: MarketStatusExtendedEnum;
+  nasdaq?: MarketStatusExtendedEnum;
+  otc?: MarketStatusExtendedEnum;
 }
 
 export namespace MarketStatusExchanges {
-  export enum NyseEnum {
-    Open = <any> 'open',
-    Closed = <any> 'closed',
-    ExtendedHours = <any> 'extended-hours'
-  }
-  export enum NasdaqEnum {
-    Open = <any> 'open',
-    Closed = <any> 'closed',
-    ExtendedHours = <any> 'extended-hours'
-  }
-  export enum OtcEnum {
-    Open = <any> 'open',
-    Closed = <any> 'closed',
-    ExtendedHours = <any> 'extended-hours'
-  }
+
 }
 export class ModelError {
   code?: number;
@@ -620,7 +566,7 @@ export class Split {
 export class StockSymbol {
 }
 
-export class StocksSnapshotAgg extends SnapshotBase {
+export class StocksSnapshotAgg extends Snapshot {
 }
 
 /**
