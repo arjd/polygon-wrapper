@@ -1,16 +1,10 @@
 import Polygon from "./Polygon";
-import { CryptoExchange, CryptoHistoricPair, CryptoLastPair, CryptoOpenClose, CryptoBook,
-AggregateResponse, ExtendedAggregate, SnapshotResponse, CryptoSnapshot,
+import { CryptoExchange, HistoricPair, LastPair, OpenClose, CryptoBook,
+  AggregateResponse, ExtendedAggregate, SnapshotResponse, TickerSnapshot,
 } from "./types";
 import { LocaleEnum, TimespanEnum } from "./types.enum";
 
-export default class Crypto {
-  private client : Polygon;
-
-  constructor(client: Polygon) {
-    this.client = client;
-  }
-
+export default class Crypto extends Polygon {
   /**
    * Get the previous day close for the specified ticker 
    * @summary Previous Close
@@ -18,7 +12,7 @@ export default class Crypto {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async previousClose(ticker: string, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.client.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`, [unadjusted]);
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`, [unadjusted]);
   }
 
   /**
@@ -32,8 +26,8 @@ export default class Crypto {
    */
   // FIXME offset type
   // FIXME should async functions await a promise or let the caller await?
-  public async historicTick(from: string, to: string, date: Date, offset?: number, limit?: number) : Promise<CryptoHistoricPair> {
-    return this.client.get<CryptoHistoricPair>(`/v1/historic/crypto/${from}/${to}/${date.toISOString()}`);
+  public async historicTick(from: string, to: string, date: Date, offset?: number, limit?: number) : Promise<HistoricPair> {
+    return this.get<HistoricPair>(`/v1/historic/crypto/${from}/${to}/${date.toISOString()}`);
   }
 
   /**
@@ -42,8 +36,8 @@ export default class Crypto {
    * @param from From Symbol of the pair
    * @param to To Symbol of the pair
    */
-  public async lastTick(from: string, to: string) : Promise<CryptoLastPair> {
-    return this.client.get<CryptoLastPair>(`/v1/last/crypto/${from}/${to}`);
+  public async lastTick(from: string, to: string) : Promise<LastPair> {
+    return this.get<LastPair>(`/v1/last/crypto/${from}/${to}`);
   }
 
   /**
@@ -51,7 +45,7 @@ export default class Crypto {
    * @summary Crypto Exchanges
    */
   public async exchanges() : Promise<Array<CryptoExchange>> {
-    return this.client.get<Array<CryptoExchange>>(`/v1/meta/crypto-exchanges`)
+    return this.get<Array<CryptoExchange>>(`/v1/meta/crypto-exchanges`)
   }
 
   /**
@@ -61,8 +55,8 @@ export default class Crypto {
    * @param to To Symbol of the pair
    * @param date Date of the requested open/close
    */
-  public async dailyOpenClose(from: string, to: string, date: Date) : Promise<CryptoOpenClose> {
-    return this.client.get(`/v1/open-close/crypto/${from}/${to}/${date.toISOString()}`)
+  public async dailyOpenClose(from: string, to: string, date: Date) : Promise<OpenClose> {
+    return this.get(`/v1/open-close/crypto/${from}/${to}/${date.toISOString()}`)
   }
 
   /**
@@ -74,15 +68,15 @@ export default class Crypto {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async byMarketOHLC(locale: LocaleEnum, date: Date, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.client.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/grouped/locale/${locale}/market/{market}/${date.toISOString()}`, [unadjusted]);
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/grouped/locale/${locale}/market/{market}/${date.toISOString()}`, [unadjusted]);
   }
 
   /**
    * Snapshot allows you to see all tickers current minute aggregate, daily aggregate and last trade. As well as previous days aggregate and calculated change for today.  ### *** Warning, may cause browser to hang *** The response size is large, and sometimes will cause the browser prettyprint to crash. 
    * @summary Snapshot - All Tickers
    */
-  public async allTickers() : Promise<SnapshotResponse<CryptoSnapshot>> {
-    return this.client.get<SnapshotResponse<CryptoSnapshot>>('/v2/snapshot/locale/global/markets/crypto/tickers');
+  public async allTickers() : Promise<SnapshotResponse<TickerSnapshot>> {
+    return this.get<SnapshotResponse<TickerSnapshot>>('/v2/snapshot/locale/global/markets/crypto/tickers');
   }
 
   /**
@@ -91,7 +85,7 @@ export default class Crypto {
    * @param ticker Ticker of the snapshot
    */
   public async book(ticker: string) : Promise<SnapshotResponse<CryptoBook>> {
-    return this.client.get<SnapshotResponse<CryptoBook>>(`/v2/snapshot/locale/global/markets/crypto/tickers/${ticker}/book`);
+    return this.get<SnapshotResponse<CryptoBook>>(`/v2/snapshot/locale/global/markets/crypto/tickers/${ticker}/book`);
   }
 
   /**
@@ -99,24 +93,24 @@ export default class Crypto {
    * @summary Snapshot - Single Ticker
    * @param ticker Ticker of the snapshot
    */
-  public async snapshot(ticker: string) : Promise<SnapshotResponse<CryptoSnapshot>> {
-    return this.client.get<SnapshotResponse<CryptoSnapshot>>(`/v2/snapshot/locale/global/markets/crypto/tickers/${ticker}`)
+  public async snapshot(ticker: string) : Promise<SnapshotResponse<TickerSnapshot>> {
+    return this.get<SnapshotResponse<TickerSnapshot>>(`/v2/snapshot/locale/global/markets/crypto/tickers/${ticker}`)
   }
 
   /**
    * See the current snapshot of the top 20 gainers of the day at the moment. 
    * @summary Snapshot - Gainers
    */
-  public async gainers() : Promise<SnapshotResponse<CryptoSnapshot>> {
-    return this.client.get<SnapshotResponse<CryptoSnapshot>>('/v2/snapshot/locale/global/markets/crypto/gainers');
+  public async gainers() : Promise<SnapshotResponse<TickerSnapshot>> {
+    return this.get<SnapshotResponse<TickerSnapshot>>('/v2/snapshot/locale/global/markets/crypto/gainers');
   }
 
   /**
    * See the current snapshot of the top 20 losers of the day at the moment. 
    * @summary Snapshot - Losers
    */
-  public async losers() : Promise<SnapshotResponse<CryptoSnapshot>> {
-    return this.client.get<SnapshotResponse<CryptoSnapshot>>('/v2/snapshot/locale/global/markets/crypto/losers');
+  public async losers() : Promise<SnapshotResponse<TickerSnapshot>> {
+    return this.get<SnapshotResponse<TickerSnapshot>>('/v2/snapshot/locale/global/markets/crypto/losers');
   }
   
   /**
@@ -130,6 +124,6 @@ export default class Crypto {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async aggregates(ticker: string, multiplier: number, timespan: TimespanEnum, from: string, to: string, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.client.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`);
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`);
   }
 }

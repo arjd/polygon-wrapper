@@ -15,7 +15,7 @@ export default class Polygon {
     this.apiKey = apiKey;
   }
 
-  async get<T>(uri: string, params?: Array<Primitive>): Promise<T> {
+  protected async get<T>(uri: string, params?: Array<Primitive>): Promise<T> {
     const response : Promise<T> = request.get(`${this.baseUrl}${uri}${paramToQuery([...params, this.apiKey])}`);
 
     return response;

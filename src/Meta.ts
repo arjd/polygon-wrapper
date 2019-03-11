@@ -1,20 +1,14 @@
 import Polygon from "./Polygon";
-import { Endpoints } from "./types";
+import { Endpoints, AnalystRatings, Company, Dividend, Earning, Financial, News } from "./types";
 
-export default class Meta {
-  private client : Polygon;
-
-  constructor(client: Polygon) {
-    this.client = client;
-  }
-
+export default class Meta extends Polygon {
   /**
    * Get the analyst ratings of the symbol company/entity. Ratings are from current date, up to 5months into the future. 
    * @summary Symbol Analyst Ratings
    * @param symbol Symbol we want analyst ratings for 
    */
-  public async analystRating(symbol: string) : Promise<> {
-    return this.client.get<>(`/v1/meta/symbols/${symbol}/analysts`);
+  public async analystRating(symbol: string) : Promise<AnalystRatings> {
+    return this.get<AnalystRatings>(`/v1/meta/symbols/${symbol}/analysts`);
   }
 
   /**
@@ -22,8 +16,8 @@ export default class Meta {
    * @summary Symbol Details
    * @param symbol Symbol we want details for 
    */
-  public async details(symbol: string) {
-    return this.client.get<>(`/v1/meta/symbols/${symbol}/company`)
+  public async details(symbol: string) : Promise<Company> {
+    return this.get<Company>(`/v1/meta/symbols/${symbol}/company`)
   }
 
   /**
@@ -31,8 +25,8 @@ export default class Meta {
    * @summary Symbol Dividends
    * @param symbol Symbol we want details for 
    */
-  public async dividends(symbol: string) : Promise<> {
-    return this.client.get<>(`/v1/meta/symbols/${symbol}/dividends`);
+  public async dividends(symbol: string) : Promise<Array<Dividend>> {
+    return this.get<Array<Dividend>>(`/v1/meta/symbols/${symbol}/dividends`);
   }
 
   /**
@@ -40,8 +34,8 @@ export default class Meta {
    * @summary Symbol Earnings
    * @param symbol Symbol we want details for 
    */
-  public async earnings(symbol: string) : Promise<> {
-    return this.client.get<>(`/v1/meta/symbols/${symbol}/earnings`);
+  public async earnings(symbol: string) : Promise<Array<Earning>> {
+    return this.get<Array<Earning>>(`/v1/meta/symbols/${symbol}/earnings`);
   }
 
   /**
@@ -49,8 +43,8 @@ export default class Meta {
    * @summary Symbol Financials
    * @param symbol Symbol we want details for 
    */
-  public async financials(symbol: string) : Promise<> {
-    return this.get<>(`/v1/meta/symbols/${symbol}/financials`);
+  public async financials(symbol: string) : Promise<Array<Financial>> {
+    return this.get<Array<Financial>>(`/v1/meta/symbols/${symbol}/financials`);
   }
 
   /**
@@ -69,7 +63,7 @@ export default class Meta {
    * @param perpage How many items to be on each page during pagination. Max 50 
    * @param page Which page of results to return 
    */
-  public async news(symbol: string) : Promise<> {
-    return this.get<>(`/v1/meta/symbols/${symbol}/news`);
+  public async news(symbol: string) : Promise<Array<News>> {
+    return this.get<Array<News>>(`/v1/meta/symbols/${symbol}/news`);
   }
 }

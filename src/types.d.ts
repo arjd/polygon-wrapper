@@ -3,7 +3,7 @@ import {
 } from "./types.base"
 import {
   CryptoExchangeMarketEnum, CryptoExchangeTypeEnum, StockExchangeMarketEnum, StockExchangeTypeEnum,
-  DividendQualifiedEnum, MarketHolidayExchangeEnum, MarketHolidayStatusEnum, MarketStatusEnum, MarketStatusExtendedEnum
+  DividendQualifiedEnum, MarketHolidayExchangeEnum, MarketHolidayStatusEnum, MarketStatusEnum, MarketStatusExtendedEnum, LocaleEnum, MarketEnum
 } from "./types.enum"
 
 /**
@@ -33,11 +33,34 @@ export class AggregateResponse<T> {
 }
 
 // TODO typeclass summary
+export class aggregateResponse<T> {
+  status: string;
+  results: Array<T>;
+}
+
+// TODO typeclass summary
+export class Locale {
+  locale: LocaleEnum;
+  name: string;
+}
+
+// TODO typeclass summary
+export class Locales extends aggregateResponse<Locale> { }
+
+// TODO typeclass summary
 export class SnapshotResponse<T> {
   status: string;
   tickers: Array<T>;
 }
 
+export class Market {
+  market: MarketEnum;
+  desc: string;
+}
+
+export class Markets extends aggregateResponse<Market> {  }
+
+// TODO typeclass summary
 export class Endpoints {
   symbol: Symbol;
   endpoints: {
@@ -163,24 +186,6 @@ export class CryptoSnapshotBookItem {
   x: any;
 }
 
-
-/**
- * @param ticker	Ticker of the object
- * @param todaysChange	Value of the change from previous day
- * @param todaysChangePerc	Percentage change since previous day
- * @param updated	Last Updated timestamp
- */
-export class CryptoSnapshot {
-  ticker: string;
-  day: Snapshot;
-  lastTrade: cryptoTrade;
-  min: Snapshot;
-  prevDay: Snapshot;
-  todaysChange: number;
-  todaysChangePerc: number;
-  updated: number;
-}
-
 /**
  * @param ticker	Ticker of the object
  * @param bids?	Bids
@@ -233,7 +238,7 @@ export class CryptoTrade {
 /**
  * @summary Get the open, close prices of a symbol on a certain day.
  */
-export class CryptoOpenClose {
+export class OpenClose {
   symbol: string;
   isUTC: boolean;
   day: string;
@@ -243,14 +248,17 @@ export class CryptoOpenClose {
   closingTrades: Array<cryptoTrade>;
 }
 
-export class CryptoHistoricPair {
+// TODO typeclass summary
+export class HistoricPair {
   day: string;
   msLatency: number;
+  status: string;
   symbol: string;
   ticks: Array<cryptoTrade>
 }
 
-export class CryptoLastPair {
+// TODO typeclass summary
+export class LastPair {
   status: string;
   symbol: string;
   last: CryptoTrade;
@@ -258,6 +266,16 @@ export class CryptoLastPair {
     avg: number;
     tradesAveraged?: number;
   }
+}
+
+// TODO typeclass summary
+export class ConvertedCurrency {
+  status: string;
+  from: string;
+  to: string;
+  initialAmount: number;
+  converted: number;
+  lastTrade: ForexTrade
 }
 
 /**
@@ -274,7 +292,7 @@ export class CryptoLastPair {
 */
 export class Dividend {
   symbol: StockSymbol;
-  type: string; // TODO enum
+  type: string;
   exDate: Date;
   paymentDate?: Date;
   recordDate?: Date;
@@ -355,8 +373,11 @@ export class ForexSnapshotAgg extends Snapshot {
 
 /**
  * @param ticker	Ticker of the object
-*/
-export class ForexSnapshotTicker {
+ * @param todaysChange	Value of the change from previous day
+ * @param todaysChangePerc	Percentage change since previous day
+ * @param updated	Last Updated timestamp
+ */
+export class TickerSnapshot {
   ticker: string;
   day: ForexSnapshotAgg;
   lastTrade: Forex;
@@ -394,11 +415,17 @@ export class HistTrade {
  * @param exchange	Exchange this trade happened on
  * @param timestamp	Timestamp of this trade
 */
-export class LastForexQuote {
+export class ForexQuote {
   ask: number;
   bid: number;
   exchange: number;
   timestamp: number;
+}
+
+export class ForexQuoteResponse {
+  status: string;
+  symbol: string;
+  last: ForexQuote;
 }
 
 /**
@@ -406,7 +433,7 @@ export class LastForexQuote {
  * @param exchange	Exchange this trade happened on
  * @param timestamp	Timestamp of this trade
 */
-export class LastForexTrade {
+export class ForexTrade {
   price: number;
   exchange: number;
   timestamp: number;
@@ -473,32 +500,21 @@ export class MarketHoliday {
 /**
  * @param market	Status of the market as a whole
  * @param serverTime	Current time of the server
+ * @param exchanges Status of market exchanges
+ * @param currencies Status of market currencies
 */
 export class MarketStatus {
   market: MarketStatusExtendedEnum;
   serverTime: Date;
-  exchanges: MarketStatusExchanges;
-  currencies?: MarketStatusCurrencies;
-}
-
-/**
- * @param fx?	Status of the forex market
- * @param crypto?	Status of the crypto market
-*/
-export class MarketStatusCurrencies {
-  fx?: MarketStatusEnum;
-  crypto?: MarketStatusEnum;
-}
-
-/**
- * @param nyse?	Status of the market as a whole
- * @param nasdaq?	Status of the market as a whole
- * @param otc?	Status of the market as a whole
-*/
-export class MarketStatusExchanges {
-  nyse?: MarketStatusExtendedEnum;
-  nasdaq?: MarketStatusExtendedEnum;
-  otc?: MarketStatusExtendedEnum;
+  exchanges: {
+    nyse?: MarketStatusExtendedEnum;
+    nasdaq?: MarketStatusExtendedEnum;
+    otc?: MarketStatusExtendedEnum;
+  };
+  currencies?: {
+    fx?: MarketStatusEnum;
+    crypto?: MarketStatusEnum;
+  };
 }
 
 /**
@@ -580,11 +596,17 @@ export class Split {
   forfactor: number;
 }
 
+// TODO typeclass summary
+export class Splits {
+  status: string;
+  count; number;
+  results: Array<Split>;
+}
+
 /**
  * An actual exchange symbol this item is traded under.
 */
-export class StockSymbol {
-}
+export class StockSymbol { }
 
 export class StocksSnapshotAgg extends Snapshot {
 }
@@ -596,22 +618,6 @@ export class StocksSnapshotAgg extends Snapshot {
 export class StocksSnapshotBookItem {
   p: number;
   x: any;
-}
-
-/**
- * @param todaysChange	Value of the change from previous day
- * @param todaysChangePerc	Percentage change since previous day
- * @param updated	Last Updated timestamp
-*/
-export class StocksSnapshotTicker {
-  ticker: string;
-  day: StocksSnapshotAgg;
-  lastTrade: Trade;
-  min: StocksSnapshotAgg;
-  prevDay: StocksSnapshotAgg;
-  todaysChange: number;
-  todaysChangePerc: number;
-  updated: number;
 }
 
 /**
@@ -675,6 +681,24 @@ export class Ticker {
   updated: Date;
   attrs?: any;
   codes?: TickerCodes;
+}
+
+// TODO typeclass summary
+export class TickerTypes {
+  status: string;
+  results: {
+    types: {
+      CS: "Common Stock";
+      ADR: "American Depository Receipt";
+      NVDR: "Non-Voting Depository Receipt"
+      GDR: "Global Depositary Receipt";
+    }; // FIXME how do cryptos show up in /reference/types
+    indexTypes: {
+      INDEX: "Index";
+      ETF: "Exchange Traded Fund (ETF)";
+      ETN: "Exchange Traded Note (ETN)";
+    };
+  }
 }
 
 /**

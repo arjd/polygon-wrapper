@@ -2,13 +2,7 @@ import Polygon from "./Polygon";
 import { LocaleEnum, MarketEnum, TimespanEnum } from "./types.enum";
 import { AggregateResponse, ExtendedAggregate } from "./types";
 
-export default class Indices {
-  private client: Polygon;
-
-  constructor(client: Polygon) {
-    this.client = client;
-  }
-
+export default class Indices extends Polygon {
   /**
    * Get the daily OHLC for entire markets.  ### *** Warning, may cause browser to hang *** The response size is large, and sometimes will cause the browser prettyprint to crash. 
    * @summary Grouped Daily
@@ -18,7 +12,7 @@ export default class Indices {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async dailyOHLC(locale: LocaleEnum, market: MarketEnum, date: string, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.client.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/grouped/locale/${locale}/market/${market}/${date}`);
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/grouped/locale/${locale}/market/${market}/${date}`);
   }
 
   /**
@@ -28,7 +22,7 @@ export default class Indices {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async previousClose(ticker: string, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.client.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`);
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`);
   }
 
   /**
@@ -42,6 +36,6 @@ export default class Indices {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async aggregates(ticker: string, multiplier: number, timespan: TimespanEnum, from: string, to: string, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.client.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`)
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`)
   }
 }
