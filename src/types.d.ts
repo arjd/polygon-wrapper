@@ -38,6 +38,17 @@ export class SnapshotResponse<T> {
   tickers: Array<T>;
 }
 
+export class Endpoints {
+  symbol: Symbol;
+  endpoints: {
+    company: string; // TODO uri type
+    analysts: string;
+    dividends: string;
+    splits: string;
+    news: string;
+  };
+}
+
 /**
  * @param k	Transactions ( 1 transaction contains X shares exchanged )
  * @param t?	Unix Msec Timestamp ( Start of Aggregate window )
