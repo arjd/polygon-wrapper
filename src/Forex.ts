@@ -1,6 +1,6 @@
 import Polygon from "./Polygon";
 import { LocaleEnum, MarketEnum } from "./types.enum";
-import { HistoricPair, ConvertedCurrency, ForexQuoteResponse, TickerSnapshot, SnapshotResponse, AggregateResponse, ExtendedAggregate } from "./types";
+import { ConvertedCurrency, ForexQuoteResponse, TickerSnapshot, SnapshotResponse, AggregateResponse, ExtendedAggregate, Historic } from "./types";
 
 export default class Forex extends Polygon {
   /**
@@ -12,8 +12,8 @@ export default class Forex extends Polygon {
    * @param offset Timestamp offset, used for pagination. This is the offset at which to start the results. Using the &#x60;timestamp&#x60; of the last result as the offset will give you the next page of results. 
    * @param limit Limit the size of response, Max 10000
    */
-  public async historicTicks(from: string, to: string, date: string, offset: string, limit: number = 1000) : Promise<HistoricPair> {
-    return this.get<HistoricPair>(`/v1/historic/forex/${from}/${to}/${date}`);
+  public async historicForex(from: string, to: string, date: string, offset: string, limit: number = 1000) : Promise<Historic<Forex>> {
+    return this.get<Historic<Forex>>(`/v1/historic/forex/${from}/${to}/${date}`);
   }
 
   /**

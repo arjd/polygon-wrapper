@@ -7,16 +7,6 @@ import {
 } from "./types.enum"
 
 /**
- * @summary Primitive types
- */
-export type Primitive = 
-  | boolean
-  | number
-  | string
-  | null
-  | undefined;
-
-/**
  * @param ticker	Ticker symbol requested
  * @param status	Status of the response
  * @param adjusted	If this response was adjusted for splits
@@ -80,7 +70,7 @@ export class Endpoints {
 export class ExtendedAggregate extends Aggregate {
   T?: string;
   k: number;
-  t: number | undefined;
+  t: number;
   n?: number;
 }
 
@@ -243,18 +233,26 @@ export class OpenClose {
   isUTC: boolean;
   day: string;
   open: number;
-  close; number;
+  close: number;
   openTrades: Array<cryptoTrade>;
   closingTrades: Array<cryptoTrade>;
 }
 
+export class StockOpenClose {
+  symbol: string;
+  open: Trade;
+  close: Trade;
+  afterHours: Trade;
+}
+
+
 // TODO typeclass summary
-export class HistoricPair {
+export class Historic<T> {
   day: string;
   msLatency: number;
   status: string;
   symbol: string;
-  ticks: Array<cryptoTrade>
+  ticks: Array<T>
 }
 
 // TODO typeclass summary
@@ -388,6 +386,14 @@ export class TickerSnapshot {
   updated: number;
 }
 
+// TODO typeclass summary
+export class Conditions {
+  1: 'Regular';
+  2: 'Acquisition';
+  3: 'AveragePrice';
+  4: 'AutomaticExecution';
+}
+
 /**
  * @param condition1	Condition 1 of this trade
  * @param condition2	Condition 2 of this trade
@@ -398,7 +404,7 @@ export class TickerSnapshot {
  * @param size	Size of the trade
  * @param timestamp	Timestamp of this trade
 */
-export class HistTrade {
+export class Trade {
   condition1: number;
   condition2: number;
   condition3: number;
@@ -458,6 +464,13 @@ export class LastQuote {
   timestamp: number;
 }
 
+// TODO DRY this
+export class LastQuoteResponse {
+  status: string;
+  symbol: string;
+  last: LastQuote;
+}
+
 /**
  * @param price	Price of the trade
  * @param size	Size of this trade
@@ -477,6 +490,12 @@ export class LastTrade {
   cond3: number;
   cond4: number;
   timestamp: number;
+}
+
+export class LastTradeResponse {
+  status: string;
+  symbol: string;
+  last: LastTrade;
 }
 
 /**
@@ -546,7 +565,7 @@ export class News {
  * @param aS	Ask Size
  * @param t	Timestamp of this trade
 */
-export class Quote {
+export class StockQuote { // TODO dynamic typeclass? this class is unnecessary
   c: number;
   bE: string;
   aE: string;
@@ -555,6 +574,33 @@ export class Quote {
   bS: number;
   aS: number;
   t: number;
+}
+
+// TODO typeclass summary
+export class HistoricStockQuote extends Historic<StockQuote> {
+  map: {
+    aE: "askexchange";
+    aP: "askprice";
+    aS: "asksize";
+    bE: "bidexchange";
+    bS: "bidsize";
+    c: "conditions";
+    t: "timestamp";
+  }
+}
+
+// TODO typeclass summary
+export class HistoricStockTrade extends Historic<trade> {
+  map: {
+    c1: "condition1",
+    c2: "condition2",
+    c3: "condition3",
+    c4: "condition4",
+    e: "exchange",
+    p: "price",
+    s: "size",
+    t: "timestamp"
+  }
 }
 
 /**
@@ -599,7 +645,7 @@ export class Split {
 // TODO typeclass summary
 export class Splits {
   status: string;
-  count; number;
+  count: number;
   results: Array<Split>;
 }
 
@@ -734,7 +780,7 @@ export class TickerSymbol {
  * @param s	Size of the trade
  * @param t	Timestamp of this trade
 */
-export class Trade {
+export class trade {
   c1: number;
   c2: number;
   c3: number;

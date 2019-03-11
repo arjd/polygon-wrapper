@@ -1,7 +1,8 @@
 import Polygon from "./Polygon";
-import { Exchange, Aggregate } from "./types.base";
-import { AggregateResponse, ExtendedAggregate } from "./types";
-import { TimespanEnum } from "./types.enum";
+import { Exchange } from "./types.base";
+import { AggregateResponse, ExtendedAggregate, Conditions, HistoricStockQuote, SnapshotResponse, 
+  TickerSnapshot, HistoricStockTrade, LastQuoteResponse, LastTradeResponse, StockOpenClose } from "./types";
+import { LocaleEnum, MarketEnum, TimespanEnum } from "./types.enum";
 
 export default class Stocks extends Polygon {
   /**
@@ -13,8 +14,8 @@ export default class Stocks extends Polygon {
    * @param limit Limit the size of response, Max 50000
    */
 
-  public async historicalQuotes(symbol: string, date: string) : Promise<> {
-    return this.get<>(`/v1/historic/quotes/${symbol}/${date}`);
+  public async historicalQuotes(symbol: string, date: string) : Promise<HistoricStockQuote> {
+    return this.get<HistoricStockQuote>(`/v1/historic/quotes/${symbol}/${date}`);
   }
 
   /**
@@ -25,8 +26,8 @@ export default class Stocks extends Polygon {
    * @param offset Timestamp offset, used for pagination. This is the offset at which to start the results. Using the &#x60;timestamp&#x60; of the last result as the offset will give you the next page of results. 
    * @param limit Limit the size of response, Max 50000
    */
-  public async historicTrades(symbol: string, date: string) : Promise<> {
-    return this.get<>(`/v1/historic/trades/${symbol}/${date}`);
+  public async historicTrades(symbol: string, date: string) : Promise<HistoricStockTrade> {
+    return this.get<HistoricStockTrade>(`/v1/historic/trades/${symbol}/${date}`);
   }
 
   /**
@@ -34,8 +35,8 @@ export default class Stocks extends Polygon {
    * @summary Last Quote for a Symbol
    * @param symbol Symbol of the quote to get
    */
-  public async lastQuote(symbol: string) : Promise<> {
-    return this.get<>(`/v1/last_quote/stocks/${symbol}`);
+  public async lastQuote(symbol: string) : Promise<LastQuoteResponse> {
+    return this.get<LastQuoteResponse>(`/v1/last_quote/stocks/${symbol}`);
   }
 
   /**
@@ -43,8 +44,8 @@ export default class Stocks extends Polygon {
    * @summary Last Trade for a Symbol
    * @param symbol Symbol of the stock to get
    */
-  public async lastTrade(symbol: string) : Promise<> {
-    return this.get<>(`/v1/last/stocks/${symbol}`);
+  public async lastTrade(symbol: string) : Promise<LastTradeResponse> {
+    return this.get<LastTradeResponse>(`/v1/last/stocks/${symbol}`);
   }
 
   /**
@@ -52,8 +53,8 @@ export default class Stocks extends Polygon {
    * @summary Condition Mappings
    * @param ticktype Ticker type we want mappings for 
    */
-  public async configTickType(ticktype: 'trades' | 'quotes') : Promise<> { // TODO what is this endpoint
-    return this.get<>(`/v1/meta/conditions/${ticktype}`);
+  public async conditionsMap(ticktype: 'trades' | 'quotes') : Promise<Conditions> {
+    return this.get<Conditions>(`/v1/meta/conditions/${ticktype}`);
   }
 
   /**
@@ -70,8 +71,8 @@ export default class Stocks extends Polygon {
    * @param symbol Symbol of the stock to get
    * @param date Date of the requested open/close
    */
-  public async dailyOpenClose(symbol: string, date: string) : Promise<AggregateResponse<Aggregate>> {
-    return this.get<AggregateResponse<Aggregate>>(`/v1/open-close/${symbol}/${date}`)
+  public async dailyOpenClose(symbol: string, date: string) : Promise<StockOpenClose> {
+    return this.get<StockOpenClose>(`/v1/open-close/${symbol}/${date}`)
   }
 
   /**
@@ -82,8 +83,8 @@ export default class Stocks extends Polygon {
    * @param date To date
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
-  public async groupedDaily(locale: LocaleEnum, market: MarketEnum, date: string, unadjusted?: boolean) : Promise<> { // FIXME better name
-    return this.get<>(`/v2/aggs/grouped/locale/${locale}/market/${market}/${date}`);
+  public async groupedDaily(locale: LocaleEnum, market: MarketEnum, date: string, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> { // FIXME better name
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/grouped/locale/${locale}/market/${market}/${date}`);
   }
 
   /**
@@ -92,8 +93,8 @@ export default class Stocks extends Polygon {
    * @param ticker Ticker symbol of the request
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
-  public async previousClose(ticker: string, unadjusted?: boolean) {
-    return this.get<>(`/v2/aggs/ticker/${ticker}/prev`);
+  public async previousClose(ticker: string, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> {
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`, [unadjusted]);
   }
 
   /**
@@ -106,32 +107,32 @@ export default class Stocks extends Polygon {
    * @param to To date
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
-  public async aggregates(ticker: string, multiplier: number, timespan: TimespanEnum, from: string, to: string, unadjusted?: boolean) {
-    return this.get<>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`);
+  public async aggregates(ticker: string, multiplier: number, timespan: TimespanEnum, from: string, to: string, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> {
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`, [unadjusted]);
   }
 
   /**
    * See the current snapshot of the top 20 gainers of the day at the moment. 
    * @summary Snapshot - Gainers
    */
-  public async gainers() {
-    return this.get<>('/v2/snapshot/locale/us/markets/stocks/gainers';)
+  public async gainers() : Promise<SnapshotResponse<TickerSnapshot>> {
+    return this.get<SnapshotResponse<TickerSnapshot>>('/v2/snapshot/locale/us/markets/stocks/gainers');
   }
 
   /**
    * See the current snapshot of the top 20 losers of the day at the moment. 
    * @summary Snapshot - Losers
    */
-  public async losers() {
-    return this.get<>('/v2/snapshot/locale/us/markets/stocks/losers');
+  public async losers() : Promise<SnapshotResponse<TickerSnapshot>> {
+    return this.get<SnapshotResponse<TickerSnapshot>>('/v2/snapshot/locale/us/markets/stocks/losers');
   }
 
   /**
    * Snapshot allows you to see all tickers current minute aggregate, daily aggregate and last trade. As well as previous days aggregate and calculated change for today.  ### *** Warning, may cause browser to hang *** The response size is large, and sometimes will cause the browser prettyprint to crash. 
    * @summary Snapshot - All Tickers
    */
-  public async tickers() {
-    return this.get<>('/v2/snapshot/locale/us/markets/stocks/tickers');
+  public async tickers() : Promise<SnapshotResponse<TickerSnapshot>> {
+    return this.get<SnapshotResponse<TickerSnapshot>>('/v2/snapshot/locale/us/markets/stocks/tickers');
   }
 
   /**
@@ -139,7 +140,7 @@ export default class Stocks extends Polygon {
    * @summary Snapshot - Single Ticker
    * @param ticker Ticker of the snapshot
    */
-  public async snapshot(ticker: string) {
-    return this.get<>(`/v2/snapshot/locale/us/markets/stocks/tickers/${ticker}`);
+  public async snapshot(ticker: string) : Promise<TickerSnapshot> {
+    return this.get<TickerSnapshot>(`/v2/snapshot/locale/us/markets/stocks/tickers/${ticker}`);
   }
 }

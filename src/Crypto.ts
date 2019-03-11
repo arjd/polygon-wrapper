@@ -1,6 +1,6 @@
 import Polygon from "./Polygon";
-import { CryptoExchange, HistoricPair, LastPair, OpenClose, CryptoBook,
-  AggregateResponse, ExtendedAggregate, SnapshotResponse, TickerSnapshot,
+import { CryptoExchange, LastPair, OpenClose, CryptoBook,
+  AggregateResponse, Historic, cryptoTrade, ExtendedAggregate, SnapshotResponse, TickerSnapshot,
 } from "./types";
 import { LocaleEnum, TimespanEnum } from "./types.enum";
 
@@ -26,8 +26,8 @@ export default class Crypto extends Polygon {
    */
   // FIXME offset type
   // FIXME should async functions await a promise or let the caller await?
-  public async historicTick(from: string, to: string, date: Date, offset?: number, limit?: number) : Promise<HistoricPair> {
-    return this.get<HistoricPair>(`/v1/historic/crypto/${from}/${to}/${date.toISOString()}`);
+  public async historicTick(from: string, to: string, date: Date, offset?: number, limit?: number) : Promise<Historic<cryptoTrade>> {
+    return this.get<Historic<cryptoTrade>>(`/v1/historic/crypto/${from}/${to}/${date.toISOString()}`);
   }
 
   /**
