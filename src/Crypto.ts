@@ -3,7 +3,6 @@ import { CryptoExchange, CryptoHistoricPair, CryptoLastPair, CryptoOpenClose, Cr
 AggregateResponse, ExtendedAggregate, SnapshotResponse, CryptoSnapshot,
 } from "./types";
 import { LocaleEnum, TimespanEnum } from "./types.enum";
-import { Snapshot } from "./types.base";
 
 export default class Crypto {
   private client : Polygon;
