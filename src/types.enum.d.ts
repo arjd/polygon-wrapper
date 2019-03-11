@@ -1,3 +1,13 @@
+export enum TimespanEnum {
+  Minute = 'minute',
+  Hour = 'hour',
+  Day = 'day',
+  Week = 'week',
+  Month = 'month',
+  Quarter = 'quarter',
+  Year = 'year'
+}
+
 export enum LocaleEnum {
   Global = 'GLOBAL',
   US = 'US',

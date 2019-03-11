@@ -7,19 +7,35 @@ import {
 } from "./types.enum"
 
 /**
+ * @summary Primitive types
+ */
+export type Primitive = 
+  | boolean
+  | number
+  | string
+  | null
+  | undefined;
+
+/**
  * @param ticker	Ticker symbol requested
  * @param status	Status of the response
  * @param adjusted	If this response was adjusted for splits
  * @param queryCount?	Number of aggregate ( min or day ) used to generate the response
  * @param resultsCount?	Total number of results generated
  */
-export class AggregateResponse {
+export class AggregateResponse<T> {
   ticker: string;
   status: string;
   adjusted: boolean;
   queryCount?: number;
   resultsCount?: number;
-  results: Array<Aggregate>;
+  results: Array<T>;
+}
+
+// TODO typeclass summary
+export class SnapshotResponse<T> {
+  status: string;
+  tickers: Array<T>;
 }
 
 /**
@@ -127,9 +143,6 @@ export class StockExchange extends Exchange {
   tape: string;
 }
 
-export class CryptoSnapshotAggregation extends Snapshot {
-}
-
 /**
  * @param p	Price of this book level
  * @param x	Exchange to Size of this price level
@@ -146,12 +159,12 @@ export class CryptoSnapshotBookItem {
  * @param todaysChangePerc	Percentage change since previous day
  * @param updated	Last Updated timestamp
  */
-export class CryptoTicker {
+export class CryptoSnapshot {
   ticker: string;
-  day: CryptoSnapshotAggregation;
-  lastTrade: CryptoTick;
-  min: CryptoSnapshotAggregation;
-  prevDay: CryptoSnapshotAggregation;
+  day: Snapshot;
+  lastTrade: cryptoTrade;
+  min: Snapshot;
+  prevDay: Snapshot;
   todaysChange: number;
   todaysChangePerc: number;
   updated: number;
@@ -177,13 +190,28 @@ export class CryptoBook {
 }
 
 /**
+ * @param p	Trade Price
+ * @param s	Size of the trade
+ * @param x	Exchange the trade occured on
+ * @param c	Conditions of this trade
+ * @param t	Timestamp of this trade
+*/
+export class cryptoTrade {
+  p: number;
+  s: number;
+  e: number;
+  c: Array<number>;
+  t: number;
+}
+
+/**
  * @param price	Trade Price
  * @param size	Size of the trade
  * @param exchange	Exchange the trade occured on
  * @param conditions	Conditions of this trade
  * @param timestamp	Timestamp of this trade
  */
-export class CryptoTick {
+export class CryptoTrade {
   price: number;
   size: number;
   exchange: number;
@@ -192,34 +220,29 @@ export class CryptoTick {
 }
 
 /**
- * @param p	Trade Price
- * @param s	Size of the trade
- * @param x	Exchange the trade occured on
- * @param c	Conditions of this trade
- * @param t	Timestamp of this trade
-*/
-export class CryptoTickJson extends CryptoTick {
-  constructor(p: number, s: number, x: number, c: Array<number>, t: number) {
-    super();
-    this.price = p;
-    this.size = s;
-    this.exchange = x;
-    this.conditions = c;
-    this.timestamp = t;
-  }
+ * @summary Get the open, close prices of a symbol on a certain day.
+ */
+export class CryptoOpenClose {
+  symbol: string;
+  isUTC: boolean;
+  day: string;
+  open: number;
+  close; number;
+  openTrades: Array<cryptoTrade>;
+  closingTrades: Array<cryptoTrade>;
 }
 
 export class CryptoHistoricPair {
   day: string;
   msLatency: number;
   symbol: string;
-  ticks: Array<CryptoTickJson>
+  ticks: Array<cryptoTrade>
 }
 
 export class CryptoLastPair {
   status: string;
   symbol: string;
-  last: CryptoTick;
+  last: CryptoTrade;
   lastAverage: {
     avg: number;
     tradesAveraged?: number;
@@ -248,11 +271,6 @@ export class Dividend {
   amount: number;
   qualified?: DividendQualifiedEnum;
   flag?: string;
-}
-
-// TODO what is this
-export namespace Dividend {
-
 }
 
 /**
@@ -470,15 +488,6 @@ export class MarketStatusExchanges {
   nyse?: MarketStatusExtendedEnum;
   nasdaq?: MarketStatusExtendedEnum;
   otc?: MarketStatusExtendedEnum;
-}
-
-export namespace MarketStatusExchanges {
-
-}
-export class ModelError {
-  code?: number;
-  message?: string;
-  fields?: string;
 }
 
 /**

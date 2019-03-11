@@ -1,498 +1,3 @@
-export class CryptoApi {
-
-  /**
-   * Get the daily OHLC for entire markets.  ### *** Warning, may cause browser to hang *** The response size is large, and sometimes will cause the browser prettyprint to crash. 
-   * @summary Grouped Daily
-   * @param locale Locale of the aggregates ( See &#39;Locales&#39; API )
-   * @param market Market of the aggregates ( See &#39;Markets&#39; API )
-   * @param date To date
-   * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
-   * @param {*} [options] Override http request options.
-   */
-  public v2AggsGroupedLocaleLocaleMarketMarketDateGet (locale: , market: , date: string, unadjusted?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: AggResponse;  }> {
-    const localVarPath = this.basePath + ''
-      .replace('{' + 'locale' + '}', encodeURIComponent(String(locale)))
-      .replace('{' + 'market' + '}', encodeURIComponent(String(market)))
-      .replace('{' + 'date' + '}', encodeURIComponent(String(date)));
-    let localVarQueryParameters: any = {};
-    let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
-    let localVarFormParams: any = {};
-
-    // verify required parameter 'locale' is not null or undefined
-    if (locale === null || locale === undefined) {
-      throw new Error('Required parameter locale was null or undefined when calling v2AggsGroupedLocaleLocaleMarketMarketDateGet.');
-    }
-
-    // verify required parameter 'market' is not null or undefined
-    if (market === null || market === undefined) {
-      throw new Error('Required parameter market was null or undefined when calling v2AggsGroupedLocaleLocaleMarketMarketDateGet.');
-    }
-
-    // verify required parameter 'date' is not null or undefined
-    if (date === null || date === undefined) {
-      throw new Error('Required parameter date was null or undefined when calling v2AggsGroupedLocaleLocaleMarketMarketDateGet.');
-    }
-
-    if (unadjusted !== undefined) {
-      localVarQueryParameters['unadjusted'] = ObjectSerializer.serialize(unadjusted, "boolean");
-    }
-
-    (<any>Object).assign(localVarHeaderParams, options.headers);
-
-    let localVarUseFormData = false;
-
-    let localVarRequestOptions: localVarRequest.Options = {
-      method: 'GET',
-      qs: localVarQueryParameters,
-      headers: localVarHeaderParams,
-      uri: localVarPath,
-      useQuerystring: this._useQuerystring,
-      json: true,
-    };
-
-    this.authentications.apiKey.applyToRequest(localVarRequestOptions);
-
-    this.authentications.default.applyToRequest(localVarRequestOptions);
-
-    if (Object.keys(localVarFormParams).length) {
-      if (localVarUseFormData) {
-                (<any>localVarRequestOptions).formData = localVarFormParams;
-      } else {
-                localVarRequestOptions.form = localVarFormParams;
-      }
-    }
-    return new Promise<{ response: http.ClientResponse; body: AggResponse;  }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    body = ObjectSerializer.deserialize(body, "AggResponse");
-                    if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
-                    } else {
-                        reject({ response: response, body: body });
-                    }
-                }
-      });
-    });
-  }
-  /**
-     * Get the previous day close for the specified ticker 
-     * @summary Previous Close
-     * @param ticker Ticker symbol of the request
-     * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
-     * @param {*} [options] Override http request options.
-     */
-  public v2AggsTickerTickerPrevGet (ticker: string, unadjusted?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: AggResponse;  }> {
-    const localVarPath = this.basePath + '/v2/aggs/ticker/{ticker}/prev'
-      .replace('{' + 'ticker' + '}', encodeURIComponent(String(ticker)));
-    let localVarQueryParameters: any = {};
-    let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
-    let localVarFormParams: any = {};
-
-    // verify required parameter 'ticker' is not null or undefined
-    if (ticker === null || ticker === undefined) {
-      throw new Error('Required parameter ticker was null or undefined when calling v2AggsTickerTickerPrevGet.');
-    }
-
-    if (unadjusted !== undefined) {
-      localVarQueryParameters['unadjusted'] = ObjectSerializer.serialize(unadjusted, "boolean");
-    }
-
-    (<any>Object).assign(localVarHeaderParams, options.headers);
-
-    let localVarUseFormData = false;
-
-    let localVarRequestOptions: localVarRequest.Options = {
-      method: 'GET',
-      qs: localVarQueryParameters,
-      headers: localVarHeaderParams,
-      uri: localVarPath,
-      useQuerystring: this._useQuerystring,
-      json: true,
-    };
-
-    this.authentications.apiKey.applyToRequest(localVarRequestOptions);
-
-    this.authentications.default.applyToRequest(localVarRequestOptions);
-
-    if (Object.keys(localVarFormParams).length) {
-      if (localVarUseFormData) {
-                (<any>localVarRequestOptions).formData = localVarFormParams;
-      } else {
-                localVarRequestOptions.form = localVarFormParams;
-      }
-    }
-    return new Promise<{ response: http.ClientResponse; body: AggResponse;  }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    body = ObjectSerializer.deserialize(body, "AggResponse");
-                    if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
-                    } else {
-                        reject({ response: response, body: body });
-                    }
-                }
-      });
-    });
-  }
-  /**
-     * Get aggregates for a date range, in custom time window sizes 
-     * @summary Aggregates
-     * @param ticker Ticker symbol of the request
-     * @param multiplier Size of the timespan multiplier
-     * @param timespan Size of the time window
-     * @param from From date
-     * @param to To date
-     * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
-     * @param {*} [options] Override http request options.
-     */
-  public v2AggsTickerTickerRangeMultiplierTimespanFromToGet (ticker: string, multiplier: number, timespan: 'minute' | 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year', from: string, to: string, unadjusted?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: AggResponse;  }> {
-    const localVarPath = this.basePath + '/v2/aggs/ticker/{ticker}/range/{multiplier}/{timespan}/{from}/{to}'
-      .replace('{' + 'ticker' + '}', encodeURIComponent(String(ticker)))
-      .replace('{' + 'multiplier' + '}', encodeURIComponent(String(multiplier)))
-      .replace('{' + 'timespan' + '}', encodeURIComponent(String(timespan)))
-      .replace('{' + 'from' + '}', encodeURIComponent(String(from)))
-      .replace('{' + 'to' + '}', encodeURIComponent(String(to)));
-    let localVarQueryParameters: any = {};
-    let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
-    let localVarFormParams: any = {};
-
-    // verify required parameter 'ticker' is not null or undefined
-    if (ticker === null || ticker === undefined) {
-      throw new Error('Required parameter ticker was null or undefined when calling v2AggsTickerTickerRangeMultiplierTimespanFromToGet.');
-    }
-
-    // verify required parameter 'multiplier' is not null or undefined
-    if (multiplier === null || multiplier === undefined) {
-      throw new Error('Required parameter multiplier was null or undefined when calling v2AggsTickerTickerRangeMultiplierTimespanFromToGet.');
-    }
-
-    // verify required parameter 'timespan' is not null or undefined
-    if (timespan === null || timespan === undefined) {
-      throw new Error('Required parameter timespan was null or undefined when calling v2AggsTickerTickerRangeMultiplierTimespanFromToGet.');
-    }
-
-    // verify required parameter 'from' is not null or undefined
-    if (from === null || from === undefined) {
-      throw new Error('Required parameter from was null or undefined when calling v2AggsTickerTickerRangeMultiplierTimespanFromToGet.');
-    }
-
-    // verify required parameter 'to' is not null or undefined
-    if (to === null || to === undefined) {
-      throw new Error('Required parameter to was null or undefined when calling v2AggsTickerTickerRangeMultiplierTimespanFromToGet.');
-    }
-
-    if (unadjusted !== undefined) {
-      localVarQueryParameters['unadjusted'] = ObjectSerializer.serialize(unadjusted, "boolean");
-    }
-
-    (<any>Object).assign(localVarHeaderParams, options.headers);
-
-    let localVarUseFormData = false;
-
-    let localVarRequestOptions: localVarRequest.Options = {
-      method: 'GET',
-      qs: localVarQueryParameters,
-      headers: localVarHeaderParams,
-      uri: localVarPath,
-      useQuerystring: this._useQuerystring,
-      json: true,
-    };
-
-    this.authentications.apiKey.applyToRequest(localVarRequestOptions);
-
-    this.authentications.default.applyToRequest(localVarRequestOptions);
-
-    if (Object.keys(localVarFormParams).length) {
-      if (localVarUseFormData) {
-                (<any>localVarRequestOptions).formData = localVarFormParams;
-      } else {
-                localVarRequestOptions.form = localVarFormParams;
-      }
-    }
-    return new Promise<{ response: http.ClientResponse; body: AggResponse;  }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    body = ObjectSerializer.deserialize(body, "AggResponse");
-                    if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
-                    } else {
-                        reject({ response: response, body: body });
-                    }
-                }
-      });
-    });
-  }
-  /**
-     * See the current snapshot of the top 20 gainers of the day at the moment. 
-     * @summary Snapshot - Gainers
-     * @param {*} [options] Override http request options.
-     */
-  public v2SnapshotLocaleGlobalMarketsCryptoGainersGet (options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse20018;  }> {
-    const localVarPath = this.basePath + '/v2/snapshot/locale/global/markets/crypto/gainers';
-    let localVarQueryParameters: any = {};
-    let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
-    let localVarFormParams: any = {};
-
-    (<any>Object).assign(localVarHeaderParams, options.headers);
-
-    let localVarUseFormData = false;
-
-    let localVarRequestOptions: localVarRequest.Options = {
-      method: 'GET',
-      qs: localVarQueryParameters,
-      headers: localVarHeaderParams,
-      uri: localVarPath,
-      useQuerystring: this._useQuerystring,
-      json: true,
-    };
-
-    this.authentications.apiKey.applyToRequest(localVarRequestOptions);
-
-    this.authentications.default.applyToRequest(localVarRequestOptions);
-
-    if (Object.keys(localVarFormParams).length) {
-      if (localVarUseFormData) {
-                (<any>localVarRequestOptions).formData = localVarFormParams;
-      } else {
-                localVarRequestOptions.form = localVarFormParams;
-      }
-    }
-    return new Promise<{ response: http.ClientResponse; body: InlineResponse20018;  }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    body = ObjectSerializer.deserialize(body, "InlineResponse20018");
-                    if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
-                    } else {
-                        reject({ response: response, body: body });
-                    }
-                }
-      });
-    });
-  }
-  /**
-     * See the current snapshot of the top 20 losers of the day at the moment. 
-     * @summary Snapshot - Losers
-     * @param {*} [options] Override http request options.
-     */
-  public v2SnapshotLocaleGlobalMarketsCryptoLosersGet (options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse20018;  }> {
-    const localVarPath = this.basePath + '/v2/snapshot/locale/global/markets/crypto/losers';
-    let localVarQueryParameters: any = {};
-    let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
-    let localVarFormParams: any = {};
-
-    (<any>Object).assign(localVarHeaderParams, options.headers);
-
-    let localVarUseFormData = false;
-
-    let localVarRequestOptions: localVarRequest.Options = {
-      method: 'GET',
-      qs: localVarQueryParameters,
-      headers: localVarHeaderParams,
-      uri: localVarPath,
-      useQuerystring: this._useQuerystring,
-      json: true,
-    };
-
-    this.authentications.apiKey.applyToRequest(localVarRequestOptions);
-
-    this.authentications.default.applyToRequest(localVarRequestOptions);
-
-    if (Object.keys(localVarFormParams).length) {
-      if (localVarUseFormData) {
-                (<any>localVarRequestOptions).formData = localVarFormParams;
-      } else {
-                localVarRequestOptions.form = localVarFormParams;
-      }
-    }
-    return new Promise<{ response: http.ClientResponse; body: InlineResponse20018;  }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    body = ObjectSerializer.deserialize(body, "InlineResponse20018");
-                    if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
-                    } else {
-                        reject({ response: response, body: body });
-                    }
-                }
-      });
-    });
-  }
-  /**
-     * Snapshot allows you to see all tickers current minute aggregate, daily aggregate and last trade. As well as previous days aggregate and calculated change for today.  ### *** Warning, may cause browser to hang *** The response size is large, and sometimes will cause the browser prettyprint to crash. 
-     * @summary Snapshot - All Tickers
-     * @param {*} [options] Override http request options.
-     */
-  public v2SnapshotLocaleGlobalMarketsCryptoTickersGet (options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse20018;  }> {
-    const localVarPath = this.basePath + '/v2/snapshot/locale/global/markets/crypto/tickers';
-    let localVarQueryParameters: any = {};
-    let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
-    let localVarFormParams: any = {};
-
-    (<any>Object).assign(localVarHeaderParams, options.headers);
-
-    let localVarUseFormData = false;
-
-    let localVarRequestOptions: localVarRequest.Options = {
-      method: 'GET',
-      qs: localVarQueryParameters,
-      headers: localVarHeaderParams,
-      uri: localVarPath,
-      useQuerystring: this._useQuerystring,
-      json: true,
-    };
-
-    this.authentications.apiKey.applyToRequest(localVarRequestOptions);
-
-    this.authentications.default.applyToRequest(localVarRequestOptions);
-
-    if (Object.keys(localVarFormParams).length) {
-      if (localVarUseFormData) {
-                (<any>localVarRequestOptions).formData = localVarFormParams;
-      } else {
-                localVarRequestOptions.form = localVarFormParams;
-      }
-    }
-    return new Promise<{ response: http.ClientResponse; body: InlineResponse20018;  }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    body = ObjectSerializer.deserialize(body, "InlineResponse20018");
-                    if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
-                    } else {
-                        reject({ response: response, body: body });
-                    }
-                }
-      });
-    });
-  }
-  /**
-     * See the current level 2 book of a single ticker. This is the combined book from all the exchanges. 
-     * @summary Snapshot - Single Ticker Full Book ( L2 )
-     * @param ticker Ticker of the snapshot
-     * @param {*} [options] Override http request options.
-     */
-  public v2SnapshotLocaleGlobalMarketsCryptoTickersTickerBookGet (ticker: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse20020;  }> {
-    const localVarPath = this.basePath + '/v2/snapshot/locale/global/markets/crypto/tickers/{ticker}/book'
-      .replace('{' + 'ticker' + '}', encodeURIComponent(String(ticker)));
-    let localVarQueryParameters: any = {};
-    let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
-    let localVarFormParams: any = {};
-
-    // verify required parameter 'ticker' is not null or undefined
-    if (ticker === null || ticker === undefined) {
-      throw new Error('Required parameter ticker was null or undefined when calling v2SnapshotLocaleGlobalMarketsCryptoTickersTickerBookGet.');
-    }
-
-    (<any>Object).assign(localVarHeaderParams, options.headers);
-
-    let localVarUseFormData = false;
-
-    let localVarRequestOptions: localVarRequest.Options = {
-      method: 'GET',
-      qs: localVarQueryParameters,
-      headers: localVarHeaderParams,
-      uri: localVarPath,
-      useQuerystring: this._useQuerystring,
-      json: true,
-    };
-
-    this.authentications.apiKey.applyToRequest(localVarRequestOptions);
-
-    this.authentications.default.applyToRequest(localVarRequestOptions);
-
-    if (Object.keys(localVarFormParams).length) {
-      if (localVarUseFormData) {
-                (<any>localVarRequestOptions).formData = localVarFormParams;
-      } else {
-                localVarRequestOptions.form = localVarFormParams;
-      }
-    }
-    return new Promise<{ response: http.ClientResponse; body: InlineResponse20020;  }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    body = ObjectSerializer.deserialize(body, "InlineResponse20020");
-                    if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
-                    } else {
-                        reject({ response: response, body: body });
-                    }
-                }
-      });
-    });
-  }
-  /**
-     * See the current snapshot of a single ticker 
-     * @summary Snapshot - Single Ticker
-     * @param ticker Ticker of the snapshot
-     * @param {*} [options] Override http request options.
-     */
-  public v2SnapshotLocaleGlobalMarketsCryptoTickersTickerGet (ticker: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse20019;  }> {
-    const localVarPath = this.basePath + '/v2/snapshot/locale/global/markets/crypto/tickers/{ticker}'
-      .replace('{' + 'ticker' + '}', encodeURIComponent(String(ticker)));
-    let localVarQueryParameters: any = {};
-    let localVarHeaderParams: any = (<any>Object).assign({}, this.defaultHeaders);
-    let localVarFormParams: any = {};
-
-    // verify required parameter 'ticker' is not null or undefined
-    if (ticker === null || ticker === undefined) {
-      throw new Error('Required parameter ticker was null or undefined when calling v2SnapshotLocaleGlobalMarketsCryptoTickersTickerGet.');
-    }
-
-    (<any>Object).assign(localVarHeaderParams, options.headers);
-
-    let localVarUseFormData = false;
-
-    let localVarRequestOptions: localVarRequest.Options = {
-      method: 'GET',
-      qs: localVarQueryParameters,
-      headers: localVarHeaderParams,
-      uri: localVarPath,
-      useQuerystring: this._useQuerystring,
-      json: true,
-    };
-
-    this.authentications.apiKey.applyToRequest(localVarRequestOptions);
-
-    this.authentications.default.applyToRequest(localVarRequestOptions);
-
-    if (Object.keys(localVarFormParams).length) {
-      if (localVarUseFormData) {
-                (<any>localVarRequestOptions).formData = localVarFormParams;
-      } else {
-                localVarRequestOptions.form = localVarFormParams;
-      }
-    }
-    return new Promise<{ response: http.ClientResponse; body: InlineResponse20019;  }>((resolve, reject) => {
-      localVarRequest(localVarRequestOptions, (error, response, body) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    body = ObjectSerializer.deserialize(body, "InlineResponse20019");
-                    if (response.statusCode && response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
-                    } else {
-                        reject({ response: response, body: body });
-                    }
-                }
-      });
-    });
-  }
-}
 
 export class ForexCurrenciesApi {
   protected _basePath = defaultBasePath;
@@ -543,7 +48,6 @@ export class ForexCurrenciesApi {
      * @param to To Symbol of the pair
      * @param amount Amount we want to convert. With decimal
      * @param precision Decimal precision of the conversion. Defaults to 2 which is 2 decimal places accuracy.
-     * @param {*} [options] Override http request options.
      */
   public v1ConversionFromToGet (from: string, to: string, amount?: number, precision?: number, options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse2005;  }> {
     const localVarPath = this.basePath + '/v1/conversion/{from}/{to}'
@@ -618,7 +122,6 @@ export class ForexCurrenciesApi {
      * @param date Date/Day of the historic ticks to retreive
      * @param offset Timestamp offset, used for pagination. This is the offset at which to start the results. Using the &#x60;timestamp&#x60; of the last result as the offset will give you the next page of results. 
      * @param limit Limit the size of response, Max 10000
-     * @param {*} [options] Override http request options.
      */
   public v1HistoricForexFromToDateGet (from: string, to: string, date: string, offset?: number, limit?: number, options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse2004;  }> {
     const localVarPath = this.basePath + '/v1/historic/forex/{from}/{to}/{date}'
@@ -696,7 +199,6 @@ export class ForexCurrenciesApi {
      * @summary Last Quote for a Currency Pair
      * @param from From Symbol of the pair
      * @param to To Symbol of the pair
-     * @param {*} [options] Override http request options.
      */
   public v1LastQuoteCurrenciesFromToGet (from: string, to: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse2006;  }> {
     const localVarPath = this.basePath + '/v1/last_quote/currencies/{from}/{to}'
@@ -762,7 +264,6 @@ export class ForexCurrenciesApi {
      * @param market Market of the aggregates ( See &#39;Markets&#39; API )
      * @param date To date
      * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
-     * @param {*} [options] Override http request options.
      */
   public v2AggsGroupedLocaleLocaleMarketMarketDateGet (locale: 'GLOBAL' | 'US' | 'GB' | 'CA' | 'NL' | 'GR' | 'SP' | 'DE' | 'BE' | 'DK' | 'FI' | 'IE' | 'PT' | 'IN' | 'MX' | 'FR' | 'CN' | 'CH' | 'SE', market: 'STOCKS' | 'CRYPTO' | 'BONDS' | 'MF' | 'MMF' | 'INDICES' | 'FX', date: string, unadjusted?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: AggResponse;  }> {
     const localVarPath = this.basePath + '/v2/aggs/grouped/locale/{locale}/market/{market}/{date}'
@@ -836,7 +337,6 @@ export class ForexCurrenciesApi {
      * @summary Previous Close
      * @param ticker Ticker symbol of the request
      * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
-     * @param {*} [options] Override http request options.
      */
   public v2AggsTickerTickerPrevGet (ticker: string, unadjusted?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: AggResponse;  }> {
     const localVarPath = this.basePath + '/v2/aggs/ticker/{ticker}/prev'
@@ -902,7 +402,6 @@ export class ForexCurrenciesApi {
      * @param from From date
      * @param to To date
      * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
-     * @param {*} [options] Override http request options.
      */
   public v2AggsTickerTickerRangeMultiplierTimespanFromToGet (ticker: string, multiplier: number, timespan: 'minute' | 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year', from: string, to: string, unadjusted?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: AggResponse;  }> {
     const localVarPath = this.basePath + '/v2/aggs/ticker/{ticker}/range/{multiplier}/{timespan}/{from}/{to}'
@@ -986,7 +485,6 @@ export class ForexCurrenciesApi {
   /**
      * See the current snapshot of the top 20 gainers of the day at the moment. 
      * @summary Snapshot - Gainers
-     * @param {*} [options] Override http request options.
      */
   public v2SnapshotLocaleGlobalMarketsForexGainersGet (options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse2007;  }> {
     const localVarPath = this.basePath + '/v2/snapshot/locale/global/markets/forex/gainers';
@@ -1036,7 +534,6 @@ export class ForexCurrenciesApi {
   /**
      * See the current snapshot of the top 20 losers of the day at the moment. 
      * @summary Snapshot - Losers
-     * @param {*} [options] Override http request options.
      */
   public v2SnapshotLocaleGlobalMarketsForexLosersGet (options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse2007;  }> {
     const localVarPath = this.basePath + '/v2/snapshot/locale/global/markets/forex/losers';
@@ -1086,7 +583,6 @@ export class ForexCurrenciesApi {
   /**
      * Snapshot allows you to see all tickers current minute aggregate, daily aggregate and last trade. As well as previous days aggregate and calculated change for today.  ### *** Warning, may cause browser to hang *** The response size is large, and sometimes will cause the browser prettyprint to crash. 
      * @summary Snapshot - All Tickers
-     * @param {*} [options] Override http request options.
      */
   public v2SnapshotLocaleGlobalMarketsForexTickersGet (options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse2007;  }> {
     const localVarPath = this.basePath + '/v2/snapshot/locale/global/markets/forex/tickers';
@@ -1184,7 +680,6 @@ export class IndicesApi {
      * @param market Market of the aggregates ( See &#39;Markets&#39; API )
      * @param date To date
      * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
-     * @param {*} [options] Override http request options.
      */
   public v2AggsGroupedLocaleLocaleMarketMarketDateGet (locale: 'GLOBAL' | 'US' | 'GB' | 'CA' | 'NL' | 'GR' | 'SP' | 'DE' | 'BE' | 'DK' | 'FI' | 'IE' | 'PT' | 'IN' | 'MX' | 'FR' | 'CN' | 'CH' | 'SE', market: 'STOCKS' | 'CRYPTO' | 'BONDS' | 'MF' | 'MMF' | 'INDICES' | 'FX', date: string, unadjusted?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: AggResponse;  }> {
     const localVarPath = this.basePath + '/v2/aggs/grouped/locale/{locale}/market/{market}/{date}'
@@ -1258,7 +753,6 @@ export class IndicesApi {
      * @summary Previous Close
      * @param ticker Ticker symbol of the request
      * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
-     * @param {*} [options] Override http request options.
      */
   public v2AggsTickerTickerPrevGet (ticker: string, unadjusted?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: AggResponse;  }> {
     const localVarPath = this.basePath + '/v2/aggs/ticker/{ticker}/prev'
@@ -1324,7 +818,6 @@ export class IndicesApi {
      * @param from From date
      * @param to To date
      * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
-     * @param {*} [options] Override http request options.
      */
   public v2AggsTickerTickerRangeMultiplierTimespanFromToGet (ticker: string, multiplier: number, timespan: 'minute' | 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year', from: string, to: string, unadjusted?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: AggResponse;  }> {
     const localVarPath = this.basePath + '/v2/aggs/ticker/{ticker}/range/{multiplier}/{timespan}/{from}/{to}'
@@ -1453,7 +946,6 @@ export class MetaDataApi {
      * Get the analyst ratings of the symbol company/entity. Ratings are from current date, up to 5months into the future. 
      * @summary Symbol Analyst Ratings
      * @param symbol Symbol we want analyst ratings for 
-     * @param {*} [options] Override http request options.
      */
   public v1MetaSymbolsSymbolAnalystsGet (symbol: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: AnalystRatings;  }> {
     const localVarPath = this.basePath + '/v1/meta/symbols/{symbol}/analysts'
@@ -1510,7 +1002,6 @@ export class MetaDataApi {
      * Get the details of the symbol company/entity. These are important details which offer an overview of the entity. Things like name, sector, description, logo and similar companies. 
      * @summary Symbol Details
      * @param symbol Symbol we want details for 
-     * @param {*} [options] Override http request options.
      */
   public v1MetaSymbolsSymbolCompanyGet (symbol: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Company;  }> {
     const localVarPath = this.basePath + '/v1/meta/symbols/{symbol}/company'
@@ -1567,7 +1058,6 @@ export class MetaDataApi {
      * Get the historical dividends for this symbol. 
      * @summary Symbol Dividends
      * @param symbol Symbol we want details for 
-     * @param {*} [options] Override http request options.
      */
   public v1MetaSymbolsSymbolDividendsGet (symbol: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<Dividend>;  }> {
     const localVarPath = this.basePath + '/v1/meta/symbols/{symbol}/dividends'
@@ -1624,7 +1114,6 @@ export class MetaDataApi {
      * Get the historical earnings for a company 
      * @summary Symbol Earnings
      * @param symbol Symbol we want details for 
-     * @param {*} [options] Override http request options.
      */
   public v1MetaSymbolsSymbolEarningsGet (symbol: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<Earning>;  }> {
     const localVarPath = this.basePath + '/v1/meta/symbols/{symbol}/earnings'
@@ -1681,7 +1170,6 @@ export class MetaDataApi {
      * Get the historical financials for a company 
      * @summary Symbol Financials
      * @param symbol Symbol we want details for 
-     * @param {*} [options] Override http request options.
      */
   public v1MetaSymbolsSymbolFinancialsGet (symbol: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<Financial>;  }> {
     const localVarPath = this.basePath + '/v1/meta/symbols/{symbol}/financials'
@@ -1738,7 +1226,6 @@ export class MetaDataApi {
      * Get gets the endpoints that are supported for a symbol. **Note:** The `endpoints` object is key/values of the endpoint name and url. These will almost always be the same of all symbols. 
      * @summary Symbol Endpoints
      * @param symbol Symbol we want the endpoint list for. 
-     * @param {*} [options] Override http request options.
      */
   public v1MetaSymbolsSymbolGet (symbol: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse200;  }> {
     const localVarPath = this.basePath + '/v1/meta/symbols/{symbol}'
@@ -1797,7 +1284,6 @@ export class MetaDataApi {
      * @param symbol Symbol we want details for 
      * @param perpage How many items to be on each page during pagination. Max 50 
      * @param page Which page of results to return 
-     * @param {*} [options] Override http request options.
      */
   public v1MetaSymbolsSymbolNewsGet (symbol: string, perpage?: number, page?: number, options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<News>;  }> {
     const localVarPath = this.basePath + '/v1/meta/symbols/{symbol}/news'
@@ -1905,7 +1391,6 @@ export class ReferenceApi {
   /**
      * Current status of each market 
      * @summary Market Status
-     * @param {*} [options] Override http request options.
      */
   public v1MarketstatusNowGet (options: any = {}) : Promise<{ response: http.ClientResponse; body: MarketStatus;  }> {
     const localVarPath = this.basePath + '/v1/marketstatus/now';
@@ -1955,7 +1440,6 @@ export class ReferenceApi {
   /**
      * Get upcoming market holidays and their open/close times 
      * @summary Market Holidays
-     * @param {*} [options] Override http request options.
      */
   public v1MarketstatusUpcomingGet (options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<MarketHoliday>;  }> {
     const localVarPath = this.basePath + '/v1/marketstatus/upcoming';
@@ -2005,7 +1489,6 @@ export class ReferenceApi {
   /**
      * Get the list of currently supported locales 
      * @summary Locales
-     * @param {*} [options] Override http request options.
      */
   public v2ReferenceLocalesGet (options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse2001;  }> {
     const localVarPath = this.basePath + '/v2/reference/locales';
@@ -2055,7 +1538,6 @@ export class ReferenceApi {
   /**
      * Get the list of currently supported markets 
      * @summary Markets
-     * @param {*} [options] Override http request options.
      */
   public v2ReferenceMarketsGet (options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse2001;  }> {
     const localVarPath = this.basePath + '/v2/reference/markets';
@@ -2106,7 +1588,6 @@ export class ReferenceApi {
      * Get the historical splits for this symbol. 
      * @summary Splits
      * @param symbol Symbol we want details for 
-     * @param {*} [options] Override http request options.
      */
   public v2ReferenceSplitsSymbolGet (symbol: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse2003;  }> {
     const localVarPath = this.basePath + '/v2/reference/splits/{symbol}'
@@ -2170,7 +1651,6 @@ export class ReferenceApi {
      * @param perpage How many items to be on each page during pagination. Max 50 
      * @param page Which page of results to return 
      * @param active Filter for only active or inactive symbols 
-     * @param {*} [options] Override http request options.
      */
   public v2ReferenceTickersGet (sort?: string, type?: string, market?: 'STOCKS' | 'INDICES' | 'CRYPTO' | 'FX' | 'BONDS' | 'MF' | 'MMF', locale?: string, search?: string, perpage?: number, page?: number, active?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<Symbol>;  }> {
     const localVarPath = this.basePath + '/v2/reference/tickers';
@@ -2252,7 +1732,6 @@ export class ReferenceApi {
   /**
      * Get the mapping of ticker types to descriptions / long names 
      * @summary Types Mapping
-     * @param {*} [options] Override http request options.
      */
   public v2ReferenceTypesGet (options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse2002;  }> {
     const localVarPath = this.basePath + '/v2/reference/types';
@@ -2350,7 +1829,6 @@ export class StocksEquitiesApi {
      * @param date Date/Day of the historic ticks to retreive
      * @param offset Timestamp offset, used for pagination. This is the offset at which to start the results. Using the &#x60;timestamp&#x60; of the last result as the offset will give you the next page of results. 
      * @param limit Limit the size of response, Max 50000
-     * @param {*} [options] Override http request options.
      */
   public v1HistoricQuotesSymbolDateGet (symbol: string, date: string, offset?: number, limit?: number, options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse2009;  }> {
     const localVarPath = this.basePath + '/v1/historic/quotes/{symbol}/{date}'
@@ -2424,7 +1902,6 @@ export class StocksEquitiesApi {
      * @param date Date/Day of the historic ticks to retreive
      * @param offset Timestamp offset, used for pagination. This is the offset at which to start the results. Using the &#x60;timestamp&#x60; of the last result as the offset will give you the next page of results. 
      * @param limit Limit the size of response, Max 50000
-     * @param {*} [options] Override http request options.
      */
   public v1HistoricTradesSymbolDateGet (symbol: string, date: string, offset?: number, limit?: number, options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse2008;  }> {
     const localVarPath = this.basePath + '/v1/historic/trades/{symbol}/{date}'
@@ -2495,7 +1972,6 @@ export class StocksEquitiesApi {
      * Get the last quote tick for a given stock. 
      * @summary Last Quote for a Symbol
      * @param symbol Symbol of the quote to get
-     * @param {*} [options] Override http request options.
      */
   public v1LastQuoteStocksSymbolGet (symbol: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse20011;  }> {
     const localVarPath = this.basePath + '/v1/last_quote/stocks/{symbol}'
@@ -2552,7 +2028,6 @@ export class StocksEquitiesApi {
      * Get the last trade for a given stock. 
      * @summary Last Trade for a Symbol
      * @param symbol Symbol of the stock to get
-     * @param {*} [options] Override http request options.
      */
   public v1LastStocksSymbolGet (symbol: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse20010;  }> {
     const localVarPath = this.basePath + '/v1/last/stocks/{symbol}'
@@ -2609,7 +2084,6 @@ export class StocksEquitiesApi {
      * The mappings for conditions on trades and quotes. 
      * @summary Condition Mappings
      * @param ticktype Ticker type we want mappings for 
-     * @param {*} [options] Override http request options.
      */
   public v1MetaConditionsTicktypeGet (ticktype: 'trades' | 'quotes', options: any = {}) : Promise<{ response: http.ClientResponse; body: ConditionTypeMap;  }> {
     const localVarPath = this.basePath + '/v1/meta/conditions/{ticktype}'
@@ -2665,7 +2139,6 @@ export class StocksEquitiesApi {
   /**
      * List of stock exchanges which are supported by Polygon.io 
      * @summary Exchanges
-     * @param {*} [options] Override http request options.
      */
   public v1MetaExchangesGet (options: any = {}) : Promise<{ response: http.ClientResponse; body: Array<Exchange>;  }> {
     const localVarPath = this.basePath + '/v1/meta/exchanges';
@@ -2717,7 +2190,6 @@ export class StocksEquitiesApi {
      * @summary Daily Open / Close
      * @param symbol Symbol of the stock to get
      * @param date Date of the requested open/close
-     * @param {*} [options] Override http request options.
      */
   public v1OpenCloseSymbolDateGet (symbol: string, date: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse20012;  }> {
     const localVarPath = this.basePath + '/v1/open-close/{symbol}/{date}'
@@ -2783,7 +2255,6 @@ export class StocksEquitiesApi {
      * @param market Market of the aggregates ( See &#39;Markets&#39; API )
      * @param date To date
      * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
-     * @param {*} [options] Override http request options.
      */
   public v2AggsGroupedLocaleLocaleMarketMarketDateGet (locale: 'GLOBAL' | 'US' | 'GB' | 'CA' | 'NL' | 'GR' | 'SP' | 'DE' | 'BE' | 'DK' | 'FI' | 'IE' | 'PT' | 'IN' | 'MX' | 'FR' | 'CN' | 'CH' | 'SE', market: 'STOCKS' | 'CRYPTO' | 'BONDS' | 'MF' | 'MMF' | 'INDICES' | 'FX', date: string, unadjusted?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: AggResponse;  }> {
     const localVarPath = this.basePath + '/v2/aggs/grouped/locale/{locale}/market/{market}/{date}'
@@ -2857,7 +2328,6 @@ export class StocksEquitiesApi {
      * @summary Previous Close
      * @param ticker Ticker symbol of the request
      * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
-     * @param {*} [options] Override http request options.
      */
   public v2AggsTickerTickerPrevGet (ticker: string, unadjusted?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: AggResponse;  }> {
     const localVarPath = this.basePath + '/v2/aggs/ticker/{ticker}/prev'
@@ -2923,7 +2393,6 @@ export class StocksEquitiesApi {
      * @param from From date
      * @param to To date
      * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
-     * @param {*} [options] Override http request options.
      */
   public v2AggsTickerTickerRangeMultiplierTimespanFromToGet (ticker: string, multiplier: number, timespan: 'minute' | 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year', from: string, to: string, unadjusted?: boolean, options: any = {}) : Promise<{ response: http.ClientResponse; body: AggResponse;  }> {
     const localVarPath = this.basePath + '/v2/aggs/ticker/{ticker}/range/{multiplier}/{timespan}/{from}/{to}'
@@ -3007,7 +2476,6 @@ export class StocksEquitiesApi {
   /**
      * See the current snapshot of the top 20 gainers of the day at the moment. 
      * @summary Snapshot - Gainers
-     * @param {*} [options] Override http request options.
      */
   public v2SnapshotLocaleUsMarketsStocksGainersGet (options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse20013;  }> {
     const localVarPath = this.basePath + '/v2/snapshot/locale/us/markets/stocks/gainers';
@@ -3057,7 +2525,6 @@ export class StocksEquitiesApi {
   /**
      * See the current snapshot of the top 20 losers of the day at the moment. 
      * @summary Snapshot - Losers
-     * @param {*} [options] Override http request options.
      */
   public v2SnapshotLocaleUsMarketsStocksLosersGet (options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse20013;  }> {
     const localVarPath = this.basePath + '/v2/snapshot/locale/us/markets/stocks/losers';
@@ -3107,7 +2574,6 @@ export class StocksEquitiesApi {
   /**
      * Snapshot allows you to see all tickers current minute aggregate, daily aggregate and last trade. As well as previous days aggregate and calculated change for today.  ### *** Warning, may cause browser to hang *** The response size is large, and sometimes will cause the browser prettyprint to crash. 
      * @summary Snapshot - All Tickers
-     * @param {*} [options] Override http request options.
      */
   public v2SnapshotLocaleUsMarketsStocksTickersGet (options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse20013;  }> {
     const localVarPath = this.basePath + '/v2/snapshot/locale/us/markets/stocks/tickers';
@@ -3158,7 +2624,6 @@ export class StocksEquitiesApi {
      * See the current snapshot of a single ticker 
      * @summary Snapshot - Single Ticker
      * @param ticker Ticker of the snapshot
-     * @param {*} [options] Override http request options.
      */
   public v2SnapshotLocaleUsMarketsStocksTickersTickerGet (ticker: string, options: any = {}) : Promise<{ response: http.ClientResponse; body: InlineResponse20014;  }> {
     const localVarPath = this.basePath + '/v2/snapshot/locale/us/markets/stocks/tickers/{ticker}'
