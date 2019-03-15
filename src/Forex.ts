@@ -1,8 +1,8 @@
-import Polygon from "./Polygon";
+import polygon from "./polygon";
 import { LocaleEnum, MarketEnum } from "./types.enum";
 import { ConvertedCurrency, ForexQuoteResponse, TickerSnapshot, SnapshotResponse, AggregateResponse, ExtendedAggregate, Historic } from "./types";
 
-export default class Forex extends Polygon {
+export default class Forex extends polygon {
   /**
    * Get historic ticks for a currency pair. Example for **USD/JPY** the from would be **USD** and to would be **JPY**. The date formatted like **2017-6-22** 
    * @summary Historic Forex Ticks
@@ -12,8 +12,8 @@ export default class Forex extends Polygon {
    * @param offset Timestamp offset, used for pagination. This is the offset at which to start the results. Using the &#x60;timestamp&#x60; of the last result as the offset will give you the next page of results. 
    * @param limit Limit the size of response, Max 10000
    */
-  public async historicForex(from: string, to: string, date: string, offset: string, limit: number = 1000) : Promise<Historic<Forex>> {
-    return this.get<Historic<Forex>>(`/v1/historic/forex/${from}/${to}/${date}`);
+  public async historicTick(from: string, to: string, date: string, offset: number, limit: number = 1000) : Promise<Historic<Forex>> {
+    return this.get<Historic<Forex>>(`/v1/historic/forex/${from}/${to}/${date}`, { offset: offset, limit: limit });
   }
 
   /**
@@ -25,7 +25,7 @@ export default class Forex extends Polygon {
    * @param precision Decimal precision of the conversion. Defaults to 2 which is 2 decimal places accuracy.
    */
   public async currencyConversion(from: string, to: string, amount: number, precision: number = 2) : Promise<ConvertedCurrency> {
-    return this.get<ConvertedCurrency>(`/v1/conversion/${from}/${to}`, [amount, precision]);
+    return this.get<ConvertedCurrency>(`/v1/conversion/${from}/${to}`, { amount: amount, precision: precision });
   }
 
   /**
@@ -46,8 +46,8 @@ export default class Forex extends Polygon {
    * @param date To date
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
-  public async dailyOHLC(locale: LocaleEnum, market: MarketEnum, date: string, unadjusted?: boolean) : Promise<SnapshotResponse<TickerSnapshot>> {
-    return this.get<SnapshotResponse<TickerSnapshot>>(`/v2/aggs/grouped/locale/${locale}/market/${market}/${date}`);
+  public async dailyOHLC(locale: LocaleEnum, market: MarketEnum, date: string, unadjusted: boolean = false) : Promise<SnapshotResponse<TickerSnapshot>> {
+    return this.get<SnapshotResponse<TickerSnapshot>>(`/v2/aggs/grouped/locale/${locale}/market/${market}/${date}`, { unadjusted: unadjusted });
   }
 
   /**
@@ -56,8 +56,8 @@ export default class Forex extends Polygon {
    * @param ticker Ticker symbol of the request
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
-  public async previousClose(ticker: string, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`);
+  public async previousClose(ticker: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`, { unadjusted: unadjusted });
   }
 
   /**
@@ -70,8 +70,8 @@ export default class Forex extends Polygon {
    * @param to To date
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
-  public async aggregates(ticker: string, multiplier: number, timespan: string, from: string, to: string, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`);
+  public async aggregates(ticker: string, multiplier: number, timespan: string, from: string, to: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`, { unadjusted: unadjusted });
   }
 
   /**

@@ -1,7 +1,7 @@
-import Polygon from "./Polygon";
+import polygon from "./polygon";
 import { MarketStatus, MarketHoliday, Locales, Markets, Splits, Ticker, TickerTypes } from "./types"
 
-export default class Reference extends Polygon {
+export default class Reference extends polygon {
   /**
    * Current status of each market 
    * @summary Market Status

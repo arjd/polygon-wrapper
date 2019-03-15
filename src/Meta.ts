@@ -1,7 +1,7 @@
-import Polygon from "./Polygon";
+import polygon from "./polygon";
 import { Endpoints, AnalystRatings, Company, Dividend, Earning, Financial, News } from "./types";
 
-export default class Meta extends Polygon {
+export default class Meta extends polygon {
   /**
    * Get the analyst ratings of the symbol company/entity. Ratings are from current date, up to 5months into the future. 
    * @summary Symbol Analyst Ratings

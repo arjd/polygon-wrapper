@@ -1,22 +1,32 @@
 import axios from "axios";
 
-function paramToQuery(params: Array<boolean | string | number>) {
-    let query = `?${params.shift()}`;
-    while (params) query += `&${params.shift()}`;
-    return query;
+interface QueryParameters {
+  [key: string]: string | boolean | number;
 }
 
-export default class Polygon {
-  protected baseUrl : string = 'https://api.polygon.io';
+const paramsToQuery = (params: QueryParameters): string => {
+  var prefix = '?'
+  var query = '';
+  Object.keys(params).forEach(k => {
+    query += `${prefix}${k}=${params[k]}`;
+    if (prefix == '?') prefix = '&';
+  });
+  return query;
+};
+
+export default class polygon {
+  private baseUrl : string = 'https://api.polygon.io';
   private apiKey : string;
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
   }
 
-  protected async get<T>(uri: string, params?: Array<boolean | string | number>): Promise<T> {
-    const _params = params ? [...params, this.apiKey] : [this.apiKey];
+  protected async get<T>(uri: string, ...params: Array<QueryParameters>): Promise<T> {
+    var obj: QueryParameters = { apiKey: this.apiKey };
+    const url = `${this.baseUrl}${uri}${paramsToQuery(Object.assign(obj, params))}`;
+    const responseP = axios.get(url).then(res => res.data);
 
-    return axios.get(`${this.baseUrl}${uri}${paramToQuery(_params)}`); // FIXME
+    return responseP;
   }
 };

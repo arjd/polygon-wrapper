@@ -1,10 +1,10 @@
-import Polygon from "./Polygon";
+import polygon from "./polygon";
 import { Exchange } from "./types.base";
 import { AggregateResponse, ExtendedAggregate, Conditions, HistoricStockQuote, SnapshotResponse, 
   TickerSnapshot, HistoricStockTrade, LastQuoteResponse, LastTradeResponse, StockOpenClose } from "./types";
 import { LocaleEnum, MarketEnum, TimespanEnum } from "./types.enum";
 
-export default class Stocks extends Polygon {
+export default class Stocks extends polygon {
   /**
    * Get historic quotes for a symbol. 
    * @summary Historic Quotes
@@ -14,8 +14,8 @@ export default class Stocks extends Polygon {
    * @param limit Limit the size of response, Max 50000
    */
 
-  public async historicalQuotes(symbol: string, date: string) : Promise<HistoricStockQuote> {
-    return this.get<HistoricStockQuote>(`/v1/historic/quotes/${symbol}/${date}`);
+  public async historicalQuotes(symbol: string, date: string, offset: number, limit: number = 100) : Promise<HistoricStockQuote> {
+    return this.get<HistoricStockQuote>(`/v1/historic/quotes/${symbol}/${date}`, { offset: offset, limit: limit });
   }
 
   /**
@@ -26,8 +26,8 @@ export default class Stocks extends Polygon {
    * @param offset Timestamp offset, used for pagination. This is the offset at which to start the results. Using the &#x60;timestamp&#x60; of the last result as the offset will give you the next page of results. 
    * @param limit Limit the size of response, Max 50000
    */
-  public async historicTrades(symbol: string, date: string) : Promise<HistoricStockTrade> {
-    return this.get<HistoricStockTrade>(`/v1/historic/trades/${symbol}/${date}`);
+  public async historicTrades(symbol: string, date: string, offset: number, limit: number = 100) : Promise<HistoricStockTrade> {
+    return this.get<HistoricStockTrade>(`/v1/historic/trades/${symbol}/${date}`, { offset: offset, limit: limit });
   }
 
   /**
@@ -83,8 +83,8 @@ export default class Stocks extends Polygon {
    * @param date To date
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
-  public async groupedDaily(locale: LocaleEnum, market: MarketEnum, date: string, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> { // FIXME better name
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/grouped/locale/${locale}/market/${market}/${date}`);
+  public async groupedDaily(locale: LocaleEnum, market: MarketEnum, date: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> { // FIXME better name
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/grouped/locale/${locale}/market/${market}/${date}`, { unadjusted: unadjusted });
   }
 
   /**
@@ -93,8 +93,8 @@ export default class Stocks extends Polygon {
    * @param ticker Ticker symbol of the request
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
-  public async previousClose(ticker: string, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`, [unadjusted]);
+  public async previousClose(ticker: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`, { unadjusted: unadjusted });
   }
 
   /**
@@ -107,8 +107,8 @@ export default class Stocks extends Polygon {
    * @param to To date
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
-  public async aggregates(ticker: string, multiplier: number, timespan: TimespanEnum, from: string, to: string, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`, [unadjusted]);
+  public async aggregates(ticker: string, multiplier: number, timespan: TimespanEnum, from: string, to: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`, { unadjusted: unadjusted });
   }
 
   /**

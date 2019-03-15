@@ -1,18 +1,18 @@
-import Polygon from "./Polygon";
+import polygon from "./polygon";
 import { CryptoExchange, LastPair, OpenClose, CryptoBook,
   AggregateResponse, Historic, cryptoTrade, ExtendedAggregate, SnapshotResponse, TickerSnapshot,
 } from "./types";
 import { LocaleEnum, TimespanEnum } from "./types.enum";
 
-export default class Crypto extends Polygon {
+export default class Crypto extends polygon {
   /**
    * Get the previous day close for the specified ticker 
    * @summary Previous Close
    * @param ticker Ticker symbol of the request
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
-  public async previousClose(ticker: string, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`, [unadjusted]);
+  public async previousClose(ticker: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`, { unadjusted: unadjusted });
   }
 
   /**
@@ -24,10 +24,8 @@ export default class Crypto extends Polygon {
    * @param offset Timestamp offset, used for pagination. This is the offset at which to start the results. Using the &#x60;timestamp&#x60; of the last result as the offset will give you the next page of results. 
    * @param limit Limit the size of response, Max 10000
    */
-  // FIXME offset type
-  // FIXME should async functions await a promise or let the caller await?
-  public async historicTick(from: string, to: string, date: Date, offset?: number, limit?: number) : Promise<Historic<cryptoTrade>> {
-    return this.get<Historic<cryptoTrade>>(`/v1/historic/crypto/${from}/${to}/${date.toISOString()}`);
+  public async historicTrade(from: string, to: string, date: Date, offset: number, limit: number = 100) : Promise<Historic<cryptoTrade>> {
+    return this.get<Historic<cryptoTrade>>(`/v1/historic/crypto/${from}/${to}/${date.toISOString()}`, { offset: offset, limit: limit });
   }
 
   /**
@@ -36,7 +34,7 @@ export default class Crypto extends Polygon {
    * @param from From Symbol of the pair
    * @param to To Symbol of the pair
    */
-  public async lastTick(from: string, to: string) : Promise<LastPair> {
+  public async lastTrade(from: string, to: string) : Promise<LastPair> {
     return this.get<LastPair>(`/v1/last/crypto/${from}/${to}`);
   }
 
@@ -67,8 +65,8 @@ export default class Crypto extends Polygon {
    * @param date To date
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
-  public async byMarketOHLC(locale: LocaleEnum, date: Date, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/grouped/locale/${locale}/market/{market}/${date.toISOString()}`, [unadjusted]);
+  public async byMarketOHLC(locale: LocaleEnum, date: Date, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/grouped/locale/${locale}/market/{market}/${date.toISOString()}`, { unadjusted: unadjusted });
   }
 
   /**
@@ -123,7 +121,7 @@ export default class Crypto extends Polygon {
    * @param to To date
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
-  public async aggregates(ticker: string, multiplier: number, timespan: TimespanEnum, from: string, to: string, unadjusted?: boolean) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`);
+  public async aggregates(ticker: string, multiplier: number, timespan: TimespanEnum, from: string, to: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`, { unadjusted: unadjusted });
   }
 }
