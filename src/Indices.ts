@@ -1,6 +1,6 @@
-import polygon from "./polygon";
-import { LocaleEnum, MarketEnum, TimespanEnum } from "./types.enum";
-import { AggregateResponse, ExtendedAggregate } from "./types";
+import polygon from "./polygon"; // eslint-disable-line
+import { LocaleEnum, MarketEnum, TimespanEnum } from "./types/polygon.enum"; // eslint-disable-line
+import { AggregateResponse, ExtendedAggregate } from "./types/polygon"; // eslint-disable-line
 
 export default class Indices extends polygon {
   /**
@@ -12,7 +12,7 @@ export default class Indices extends polygon {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async dailyOHLC(locale: LocaleEnum, market: MarketEnum, date: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/grouped/locale/${locale}/market/${market}/${date}`, { unadjusted: unadjusted });
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/grouped/locale/${locale}/market/${market}/${date}`, { unadjusted });
   }
 
   /**
@@ -22,7 +22,7 @@ export default class Indices extends polygon {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async previousClose(ticker: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`, { unadjusted: unadjusted });
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`, { unadjusted });
   }
 
   /**
@@ -36,6 +36,6 @@ export default class Indices extends polygon {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async aggregates(ticker: string, multiplier: number, timespan: TimespanEnum, from: string, to: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`, { unadjusted: unadjusted })
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`, { unadjusted })
   }
 }

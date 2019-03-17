@@ -1,8 +1,6 @@
-import polygon from "./polygon";
-import { CryptoExchange, LastPair, OpenClose, CryptoBook,
-  AggregateResponse, Historic, cryptoTrade, ExtendedAggregate, SnapshotResponse, TickerSnapshot,
-} from "./types";
-import { LocaleEnum, TimespanEnum } from "./types.enum";
+import polygon from "./polygon"; // eslint-disable-line
+import { CryptoExchange, LastPair, OpenClose, CryptoBook, AggregateResponse, Historic, cryptoTrade, ExtendedAggregate, SnapshotResponse, TickerSnapshot } from "./types/polygon"; // eslint-disable-line
+import { LocaleEnum, TimespanEnum } from "./types/polygon.enum"; // eslint-disable-line
 
 export default class Crypto extends polygon {
   /**
@@ -12,7 +10,7 @@ export default class Crypto extends polygon {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async previousClose(ticker: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`, { unadjusted: unadjusted });
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`, { unadjusted });
   }
 
   /**
@@ -25,8 +23,8 @@ export default class Crypto extends polygon {
    * @param limit Limit the size of response, Max 10000
    */
   public async historicTrade(from: string, to: string, date: Date, offset: number, limit: number = 100) : Promise<Historic<cryptoTrade>> {
-    return this.get<Historic<cryptoTrade>>(`/v1/historic/crypto/${from}/${to}/${date.toISOString()}`, { offset: offset, limit: limit });
-  }
+    return this.get<Historic<cryptoTrade>>(`/v1/historic/crypto/${from}/${to}/${date.toISOString()}`, { offset, limit });
+    }
 
   /**
    * Get Last Trade Tick for a Currency Pair. 
@@ -36,7 +34,7 @@ export default class Crypto extends polygon {
    */
   public async lastTrade(from: string, to: string) : Promise<LastPair> {
     return this.get<LastPair>(`/v1/last/crypto/${from}/${to}`);
-  }
+    }
 
   /**
    * List of crypto currency exchanges which are supported by Polygon.io 
@@ -66,8 +64,8 @@ export default class Crypto extends polygon {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async byMarketOHLC(locale: LocaleEnum, date: Date, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/grouped/locale/${locale}/market/{market}/${date.toISOString()}`, { unadjusted: unadjusted });
-  }
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/grouped/locale/${locale}/market/{market}/${date.toISOString()}`, { unadjusted });
+    }
 
   /**
    * Snapshot allows you to see all tickers current minute aggregate, daily aggregate and last trade. As well as previous days aggregate and calculated change for today.  ### *** Warning, may cause browser to hang *** The response size is large, and sometimes will cause the browser prettyprint to crash. 
@@ -75,7 +73,7 @@ export default class Crypto extends polygon {
    */
   public async allTickers() : Promise<SnapshotResponse<TickerSnapshot>> {
     return this.get<SnapshotResponse<TickerSnapshot>>('/v2/snapshot/locale/global/markets/crypto/tickers');
-  }
+    }
 
   /**
    * See the current level 2 book of a single ticker. This is the combined book from all the exchanges. 
@@ -84,7 +82,7 @@ export default class Crypto extends polygon {
    */
   public async book(ticker: string) : Promise<SnapshotResponse<CryptoBook>> {
     return this.get<SnapshotResponse<CryptoBook>>(`/v2/snapshot/locale/global/markets/crypto/tickers/${ticker}/book`);
-  }
+    }
 
   /**
    * See the current snapshot of a single ticker 
@@ -101,7 +99,7 @@ export default class Crypto extends polygon {
    */
   public async gainers() : Promise<SnapshotResponse<TickerSnapshot>> {
     return this.get<SnapshotResponse<TickerSnapshot>>('/v2/snapshot/locale/global/markets/crypto/gainers');
-  }
+    }
 
   /**
    * See the current snapshot of the top 20 losers of the day at the moment. 
@@ -109,7 +107,7 @@ export default class Crypto extends polygon {
    */
   public async losers() : Promise<SnapshotResponse<TickerSnapshot>> {
     return this.get<SnapshotResponse<TickerSnapshot>>('/v2/snapshot/locale/global/markets/crypto/losers');
-  }
+    }
   
   /**
    * Get aggregates for a date range, in custom time window sizes 
@@ -122,6 +120,6 @@ export default class Crypto extends polygon {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async aggregates(ticker: string, multiplier: number, timespan: TimespanEnum, from: string, to: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`, { unadjusted: unadjusted });
-  }
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`, { unadjusted });
+    }
 }

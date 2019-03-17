@@ -1,9 +1,10 @@
-import Meta from "./Meta"
-import Reference from "./Reference"
-import Stocks from "./Stocks"
-import Forex from "./Forex"
-import Indices from "./Indices"
-import Crypto from "./Crypto"
+/* eslint-disable */
+import Meta from "./Meta";
+import Reference from "./Reference";
+import Stocks from "./Stocks";
+import Forex from "./Forex";
+import Indices from "./Indices";
+import Crypto from "./Crypto";
 
 export default class Polygon {
   public meta : Meta;

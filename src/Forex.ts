@@ -1,6 +1,6 @@
-import polygon from "./polygon";
-import { LocaleEnum, MarketEnum } from "./types.enum";
-import { ConvertedCurrency, ForexQuoteResponse, TickerSnapshot, SnapshotResponse, AggregateResponse, ExtendedAggregate, Historic } from "./types";
+import polygon from "./polygon"; // eslint-disable-line
+import { LocaleEnum, MarketEnum } from "./types/polygon.enum"; // eslint-disable-line
+import { ConvertedCurrency, ForexQuoteResponse, TickerSnapshot, SnapshotResponse, AggregateResponse, ExtendedAggregate, Historic } from "./types/polygon"; // eslint-disable-line
 
 export default class Forex extends polygon {
   /**
@@ -13,8 +13,8 @@ export default class Forex extends polygon {
    * @param limit Limit the size of response, Max 10000
    */
   public async historicTick(from: string, to: string, date: string, offset: number, limit: number = 1000) : Promise<Historic<Forex>> {
-    return this.get<Historic<Forex>>(`/v1/historic/forex/${from}/${to}/${date}`, { offset: offset, limit: limit });
-  }
+    return this.get<Historic<Forex>>(`/v1/historic/forex/${from}/${to}/${date}`, { offset, limit });
+    }
 
   /**
    * Convert currencies using the latest market conversion rates. Note than you can convert in both directions. For example USD->CAD or CAD->USD. 
@@ -25,8 +25,8 @@ export default class Forex extends polygon {
    * @param precision Decimal precision of the conversion. Defaults to 2 which is 2 decimal places accuracy.
    */
   public async currencyConversion(from: string, to: string, amount: number, precision: number = 2) : Promise<ConvertedCurrency> {
-    return this.get<ConvertedCurrency>(`/v1/conversion/${from}/${to}`, { amount: amount, precision: precision });
-  }
+    return this.get<ConvertedCurrency>(`/v1/conversion/${from}/${to}`, { amount, precision });
+    }
 
   /**
    * Get Last Quote Tick for a Currency Pair. 
@@ -36,7 +36,7 @@ export default class Forex extends polygon {
    */
   public async lastQuote(from: string, to: string) : Promise<ForexQuoteResponse> {
     return this.get<ForexQuoteResponse>(`/v1/last_quote/currencies/${from}/${to}`);
-  }
+   }
 
   /**
    * Get the daily OHLC for entire markets.  ### *** Warning, may cause browser to hang *** The response size is large, and sometimes will cause the browser prettyprint to crash. 
@@ -47,8 +47,8 @@ export default class Forex extends polygon {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async dailyOHLC(locale: LocaleEnum, market: MarketEnum, date: string, unadjusted: boolean = false) : Promise<SnapshotResponse<TickerSnapshot>> {
-    return this.get<SnapshotResponse<TickerSnapshot>>(`/v2/aggs/grouped/locale/${locale}/market/${market}/${date}`, { unadjusted: unadjusted });
-  }
+    return this.get<SnapshotResponse<TickerSnapshot>>(`/v2/aggs/grouped/locale/${locale}/market/${market}/${date}`, { unadjusted });
+    }
 
   /**
    * Get the previous day close for the specified ticker 
@@ -57,8 +57,8 @@ export default class Forex extends polygon {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async previousClose(ticker: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`, { unadjusted: unadjusted });
-  }
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`, { unadjusted });
+    }
 
   /**
    * Get aggregates for a date range, in custom time window sizes 
@@ -71,8 +71,8 @@ export default class Forex extends polygon {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async aggregates(ticker: string, multiplier: number, timespan: string, from: string, to: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`, { unadjusted: unadjusted });
-  }
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`, { unadjusted });
+    }
 
   /**
    * See the current snapshot of the top 20 gainers of the day at the moment. 
@@ -88,7 +88,7 @@ export default class Forex extends polygon {
    */
   public async losers() : Promise<SnapshotResponse<TickerSnapshot>> {
     return this.get<SnapshotResponse<TickerSnapshot>>(`/v2/snapshot/locale/global/markets/forex/losers`);
-  }
+    }
 
   /**
    * Snapshot allows you to see all tickers current minute aggregate, daily aggregate and last trade. As well as previous days aggregate and calculated change for today. 
@@ -97,5 +97,5 @@ export default class Forex extends polygon {
    */
   public async tickers() : Promise<SnapshotResponse<TickerSnapshot>> {
     return this.get<SnapshotResponse<TickerSnapshot>>(`/v2/snapshot/locale/global/markets/forex/tickers`);
-  }
+    }
  }

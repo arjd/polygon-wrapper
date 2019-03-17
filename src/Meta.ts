@@ -1,5 +1,5 @@
-import polygon from "./polygon";
-import { Endpoints, AnalystRatings, Company, Dividend, Earning, Financial, News } from "./types";
+import polygon from "./polygon"; // eslint-disable-line
+import { Endpoints, AnalystRatings, Company, Dividend, Earning, Financial, News } from "./types/polygon.d"; // eslint-disable-line
 
 export default class Meta extends polygon {
   /**

@@ -1,8 +1,6 @@
-import polygon from "./polygon";
-import { Exchange } from "./types.base";
-import { AggregateResponse, ExtendedAggregate, Conditions, HistoricStockQuote, SnapshotResponse, 
-  TickerSnapshot, HistoricStockTrade, LastQuoteResponse, LastTradeResponse, StockOpenClose } from "./types";
-import { LocaleEnum, MarketEnum, TimespanEnum } from "./types.enum";
+import polygon from "./polygon"; // eslint-disable-line
+import { Exchange, AggregateResponse, ExtendedAggregate, Conditions, HistoricStockQuote, SnapshotResponse, TickerSnapshot, HistoricStockTrade, LastQuoteResponse, LastTradeResponse, StockOpenClose } from "./types/polygon"; // eslint-disable-line
+import { LocaleEnum, MarketEnum, TimespanEnum } from "./types/polygon.enum"; // eslint-disable-line
 
 export default class Stocks extends polygon {
   /**
@@ -15,7 +13,7 @@ export default class Stocks extends polygon {
    */
 
   public async historicalQuotes(symbol: string, date: string, offset: number, limit: number = 100) : Promise<HistoricStockQuote> {
-    return this.get<HistoricStockQuote>(`/v1/historic/quotes/${symbol}/${date}`, { offset: offset, limit: limit });
+    return this.get<HistoricStockQuote>(`/v1/historic/quotes/${symbol}/${date}`, { offset, limit });
   }
 
   /**
@@ -27,8 +25,8 @@ export default class Stocks extends polygon {
    * @param limit Limit the size of response, Max 50000
    */
   public async historicTrades(symbol: string, date: string, offset: number, limit: number = 100) : Promise<HistoricStockTrade> {
-    return this.get<HistoricStockTrade>(`/v1/historic/trades/${symbol}/${date}`, { offset: offset, limit: limit });
-  }
+    return this.get<HistoricStockTrade>(`/v1/historic/trades/${symbol}/${date}`, { offset, limit });
+    }
 
   /**
    * Get the last quote tick for a given stock. 
@@ -37,7 +35,7 @@ export default class Stocks extends polygon {
    */
   public async lastQuote(symbol: string) : Promise<LastQuoteResponse> {
     return this.get<LastQuoteResponse>(`/v1/last_quote/stocks/${symbol}`);
-  }
+    }
 
   /**
    * Get the last trade for a given stock. 
@@ -46,7 +44,7 @@ export default class Stocks extends polygon {
    */
   public async lastTrade(symbol: string) : Promise<LastTradeResponse> {
     return this.get<LastTradeResponse>(`/v1/last/stocks/${symbol}`);
-  }
+    }
 
   /**
    * The mappings for conditions on trades and quotes. 
@@ -55,7 +53,7 @@ export default class Stocks extends polygon {
    */
   public async conditionsMap(ticktype: 'trades' | 'quotes') : Promise<Conditions> {
     return this.get<Conditions>(`/v1/meta/conditions/${ticktype}`);
-  }
+    }
 
   /**
    * List of stock exchanges which are supported by Polygon.io 
@@ -84,7 +82,7 @@ export default class Stocks extends polygon {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async groupedDaily(locale: LocaleEnum, market: MarketEnum, date: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> { // FIXME better name
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/grouped/locale/${locale}/market/${market}/${date}`, { unadjusted: unadjusted });
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/grouped/locale/${locale}/market/${market}/${date}`, { unadjusted });
   }
 
   /**
@@ -94,8 +92,8 @@ export default class Stocks extends polygon {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async previousClose(ticker: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`, { unadjusted: unadjusted });
-  }
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/prev`, { unadjusted });
+    }
 
   /**
    * Get aggregates for a date range, in custom time window sizes 
@@ -108,8 +106,8 @@ export default class Stocks extends polygon {
    * @param unadjusted Set to true if the results should NOT be adjusted for splits. 
    */
   public async aggregates(ticker: string, multiplier: number, timespan: TimespanEnum, from: string, to: string, unadjusted: boolean = false) : Promise<AggregateResponse<ExtendedAggregate>> {
-    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`, { unadjusted: unadjusted });
-  }
+    return this.get<AggregateResponse<ExtendedAggregate>>(`/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${from}/${to}`, { unadjusted });
+    }
 
   /**
    * See the current snapshot of the top 20 gainers of the day at the moment. 
@@ -117,7 +115,7 @@ export default class Stocks extends polygon {
    */
   public async gainers() : Promise<SnapshotResponse<TickerSnapshot>> {
     return this.get<SnapshotResponse<TickerSnapshot>>('/v2/snapshot/locale/us/markets/stocks/gainers');
-  }
+    }
 
   /**
    * See the current snapshot of the top 20 losers of the day at the moment. 
@@ -125,7 +123,7 @@ export default class Stocks extends polygon {
    */
   public async losers() : Promise<SnapshotResponse<TickerSnapshot>> {
     return this.get<SnapshotResponse<TickerSnapshot>>('/v2/snapshot/locale/us/markets/stocks/losers');
-  }
+    }
 
   /**
    * Snapshot allows you to see all tickers current minute aggregate, daily aggregate and last trade. As well as previous days aggregate and calculated change for today.  ### *** Warning, may cause browser to hang *** The response size is large, and sometimes will cause the browser prettyprint to crash. 
@@ -133,7 +131,7 @@ export default class Stocks extends polygon {
    */
   public async tickers() : Promise<SnapshotResponse<TickerSnapshot>> {
     return this.get<SnapshotResponse<TickerSnapshot>>('/v2/snapshot/locale/us/markets/stocks/tickers');
-  }
+    }
 
   /**
    * See the current snapshot of a single ticker 
@@ -142,5 +140,5 @@ export default class Stocks extends polygon {
    */
   public async snapshot(ticker: string) : Promise<TickerSnapshot> {
     return this.get<TickerSnapshot>(`/v2/snapshot/locale/us/markets/stocks/tickers/${ticker}`);
-  }
+    }
 }

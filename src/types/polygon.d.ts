@@ -1,10 +1,39 @@
-import {
-  Snapshot, Aggregate, Exchange
-} from "./types.base"
-import {
-  CryptoExchangeMarketEnum, CryptoExchangeTypeEnum, StockExchangeMarketEnum, StockExchangeTypeEnum,
-  DividendQualifiedEnum, MarketHolidayExchangeEnum, MarketHolidayStatusEnum, MarketStatusEnum, MarketStatusExtendedEnum, LocaleEnum, MarketEnum
-} from "./types.enum"
+import { CryptoExchangeMarketEnum, CryptoExchangeTypeEnum, StockExchangeMarketEnum, StockExchangeTypeEnum, DividendQualifiedEnum, MarketHolidayExchangeEnum, MarketHolidayStatusEnum, MarketStatusEnum, MarketStatusExtendedEnum, LocaleEnum, MarketEnum } from "./polygon.enum" // eslint-disable-line
+
+/**
+ * @param c	Close price
+ * @param h	High price
+ * @param l	Low price
+ * @param o	Open price
+ * @param v	Volume
+ */
+export interface Snapshot {
+  c: number;
+  h: number;
+  l: number;
+  o: number;
+  v: number;
+}
+
+/**
+ * @param t	Timestamp of this aggregation
+*/
+export interface Aggregate extends Snapshot {
+  t: number;
+}
+
+/**
+ * @param id	ID of the exchange
+ * @param type	Type of exchange feed
+ * @param market	Market data type this exchange contains ( crypto only currently )
+ * @param name	Name of the exchange
+ */
+export interface Exchange {
+  id: number;
+  type: string;
+  market: string;
+  name: string;
+}
 
 /**
  * @param ticker	Ticker symbol requested
@@ -13,45 +42,43 @@ import {
  * @param queryCount?	Number of aggregate ( min or day ) used to generate the response
  * @param resultsCount?	Total number of results generated
  */
-export class AggregateResponse<T> {
+export interface AggregateResponse<T> extends aggregateResponse<T> {
   ticker: string;
-  status: string;
   adjusted: boolean;
   queryCount?: number;
   resultsCount?: number;
-  results: Array<T>;
 }
 
 // TODO typeclass summary
-export class aggregateResponse<T> {
+export interface aggregateResponse<T> {
   status: string;
   results: Array<T>;
 }
 
 // TODO typeclass summary
-export class Locale {
+export interface Locale {
   locale: LocaleEnum;
   name: string;
 }
 
 // TODO typeclass summary
-export class Locales extends aggregateResponse<Locale> { }
+export interface Locales extends aggregateResponse<Locale> { }
 
 // TODO typeclass summary
-export class SnapshotResponse<T> {
+export interface SnapshotResponse<T> {
   status: string;
   tickers: Array<T>;
 }
 
-export class Market {
+export interface Market {
   market: MarketEnum;
   desc: string;
 }
 
-export class Markets extends aggregateResponse<Market> {  }
+export interface Markets extends aggregateResponse<Market> {  }
 
 // TODO typeclass summary
-export class Endpoints {
+export interface Endpoints {
   symbol: Symbol;
   endpoints: {
     company: string; // TODO uri type
@@ -67,7 +94,7 @@ export class Endpoints {
  * @param t?	Unix Msec Timestamp ( Start of Aggregate window )
  * @param n?	Number of items in aggregate window
  */
-export class ExtendedAggregate extends Aggregate {
+export interface ExtendedAggregate extends Aggregate {
   T?: string;
   k: number;
   t: number;
@@ -85,7 +112,7 @@ export class ExtendedAggregate extends Aggregate {
  * @param strongSell	Strong Sell ratings
  * @param updated	Last time the ratings for this symbol were updated.
  */
-export class AnalystRatings {
+export interface AnalystRatings {
   symbol: string;
   analysts: number;
   change: number;
@@ -118,7 +145,7 @@ export class AnalystRatings {
  * @param description	A description of the company and what they do/offer
  * @param updated	Last time this company record was updated.
  */
-export class Company {
+export interface Company {
   logo?: string;
   exchange: string;
   name: string;
@@ -146,7 +173,7 @@ export class Company {
 /**
  * @param url	URL of this exchange
  */
-export class CryptoExchange extends Exchange {
+export interface CryptoExchange extends Exchange {
   type: CryptoExchangeTypeEnum;
   market: CryptoExchangeMarketEnum;
   url: string;
@@ -160,7 +187,7 @@ export class CryptoExchange extends Exchange {
  * @param name	Name of the exchange
  * @param tape	Tape id of the exchange
 */
-export class StockExchange extends Exchange {
+export interface StockExchange extends Exchange {
   type: StockExchangeTypeEnum;
   market: StockExchangeMarketEnum;
   mic: string;
@@ -171,7 +198,7 @@ export class StockExchange extends Exchange {
  * @param p	Price of this book level
  * @param x	Exchange to Size of this price level
  */
-export class CryptoSnapshotBookItem {
+export interface CryptoSnapshotBookItem {
   p: number;
   x: any;
 }
@@ -185,7 +212,7 @@ export class CryptoSnapshotBookItem {
  * @param spread?	Difference between the best bid and the best ask price accross exchanges
  * @param updated	Last Updated timestamp
  */
-export class CryptoBook {
+export interface CryptoBook {
   ticker: string;
   bids?: Array<CryptoSnapshotBookItem>;
   asks?: Array<CryptoSnapshotBookItem>;
@@ -202,7 +229,7 @@ export class CryptoBook {
  * @param c	Conditions of this trade
  * @param t	Timestamp of this trade
 */
-export class cryptoTrade {
+export interface cryptoTrade {
   p: number;
   s: number;
   e: number;
@@ -217,7 +244,7 @@ export class cryptoTrade {
  * @param conditions	Conditions of this trade
  * @param timestamp	Timestamp of this trade
  */
-export class CryptoTrade {
+export interface CryptoTrade {
   price: number;
   size: number;
   exchange: number;
@@ -228,7 +255,7 @@ export class CryptoTrade {
 /**
  * @summary Get the open, close prices of a symbol on a certain day.
  */
-export class OpenClose {
+export interface OpenClose {
   symbol: string;
   isUTC: boolean;
   day: string;
@@ -238,7 +265,7 @@ export class OpenClose {
   closingTrades: Array<cryptoTrade>;
 }
 
-export class StockOpenClose {
+export interface StockOpenClose {
   symbol: string;
   open: Trade;
   close: Trade;
@@ -247,7 +274,7 @@ export class StockOpenClose {
 
 
 // TODO typeclass summary
-export class Historic<T> {
+export interface Historic<T> {
   day: string;
   msLatency: number;
   status: string;
@@ -256,7 +283,7 @@ export class Historic<T> {
 }
 
 // TODO typeclass summary
-export class LastPair {
+export interface LastPair {
   status: string;
   symbol: string;
   last: CryptoTrade;
@@ -267,7 +294,7 @@ export class LastPair {
 }
 
 // TODO typeclass summary
-export class ConvertedCurrency {
+export interface ConvertedCurrency {
   status: string;
   from: string;
   to: string;
@@ -288,7 +315,7 @@ export class ConvertedCurrency {
  * @param qualified?	Refers to the dividend income type<br/> - P = Partially qualified income<br/> - Q = Qualified income<br/> - N = Unqualified income<br/> - null = N/A or unknown 
  * @param flag?	Refers to the dividend flag, if set<br/> FI = Final dividend, div ends or instrument ends<br/> LI = Liquidation, instrument liquidates<br/> PR = Proceeds of a sale of rights or shares<br/> RE = Redemption of rights<br/> AC = Accrued dividend<br/> AR = Payment in arrears<br/> AD = Additional payment<br/> EX = Extra payment<br/> SP = Special dividend<br/> YE = Year end<br/> UR = Unknown rate<br/> SU = Regular dividend is suspended 
 */
-export class Dividend {
+export interface Dividend {
   symbol: StockSymbol;
   type: string;
   exDate: Date;
@@ -305,7 +332,7 @@ export class Dividend {
  * @param ePSReportDate	Report Date
  * @param ePSReportDateStr	Report date as non date format
 */
-export class Earning {
+export interface Earning {
   symbol: string;
   ePSReportDate: Date;
   ePSReportDateStr: string;
@@ -327,7 +354,7 @@ export class Earning {
  * @param reportDate	Report Date
  * @param reportDateStr	Report date as non date format
 */
-export class Financial {
+export interface Financial {
   symbol: string;
   reportDate: Date;
   reportDateStr: string;
@@ -357,16 +384,16 @@ export class Financial {
  * @param b	Bid price
  * @param t	Timestamp of this trade
 */
-export class Forex {
+export interface Forex {
   a: number;
   b: number;
   t: number;
 }
 
-export class ForexAggregate extends Aggregate {
+export interface ForexAggregate extends Aggregate {
 }
 
-export class ForexSnapshotAgg extends Snapshot {
+export interface ForexSnapshotAgg extends Snapshot {
 }
 
 /**
@@ -375,7 +402,7 @@ export class ForexSnapshotAgg extends Snapshot {
  * @param todaysChangePerc	Percentage change since previous day
  * @param updated	Last Updated timestamp
  */
-export class TickerSnapshot {
+export interface TickerSnapshot {
   ticker: string;
   day: ForexSnapshotAgg;
   lastTrade: Forex;
@@ -387,7 +414,7 @@ export class TickerSnapshot {
 }
 
 // TODO typeclass summary
-export class Conditions {
+export interface Conditions {
   1: 'Regular';
   2: 'Acquisition';
   3: 'AveragePrice';
@@ -404,7 +431,7 @@ export class Conditions {
  * @param size	Size of the trade
  * @param timestamp	Timestamp of this trade
 */
-export class Trade {
+export interface Trade {
   condition1: number;
   condition2: number;
   condition3: number;
@@ -421,14 +448,14 @@ export class Trade {
  * @param exchange	Exchange this trade happened on
  * @param timestamp	Timestamp of this trade
 */
-export class ForexQuote {
+export interface ForexQuote {
   ask: number;
   bid: number;
   exchange: number;
   timestamp: number;
 }
 
-export class ForexQuoteResponse {
+export interface ForexQuoteResponse {
   status: string;
   symbol: string;
   last: ForexQuote;
@@ -439,7 +466,7 @@ export class ForexQuoteResponse {
  * @param exchange	Exchange this trade happened on
  * @param timestamp	Timestamp of this trade
 */
-export class ForexTrade {
+export interface ForexTrade {
   price: number;
   exchange: number;
   timestamp: number;
@@ -454,7 +481,7 @@ export class ForexTrade {
  * @param bidexchange	Exchange the bid happened on
  * @param timestamp	Timestamp of this trade
 */
-export class LastQuote {
+export interface LastQuote {
   askprice: number;
   asksize: number;
   askexchange: number;
@@ -464,8 +491,8 @@ export class LastQuote {
   timestamp: number;
 }
 
-// TODO DRY this
-export class LastQuoteResponse {
+// TODO typeclass summary
+export interface LastQuoteResponse {
   status: string;
   symbol: string;
   last: LastQuote;
@@ -481,7 +508,7 @@ export class LastQuoteResponse {
  * @param cond4	Condition 4 of the trade
  * @param timestamp	Timestamp of this trade
 */
-export class LastTrade {
+export interface LastTrade {
   price: number;
   size: number;
   exchange: number;
@@ -492,7 +519,7 @@ export class LastTrade {
   timestamp: number;
 }
 
-export class LastTradeResponse {
+export interface LastTradeResponse {
   status: string;
   symbol: string;
   last: LastTrade;
@@ -506,7 +533,7 @@ export class LastTradeResponse {
  * @param open?	Market open time on this holiday ( if it's not closed )
  * @param close?	Market close time on this holiday ( if it's not closed )
 */
-export class MarketHoliday {
+export interface MarketHoliday {
   exchange: MarketHolidayExchangeEnum;
   name: string;
   status: MarketHolidayStatusEnum;
@@ -522,7 +549,7 @@ export class MarketHoliday {
  * @param exchanges Status of market exchanges
  * @param currencies Status of market currencies
 */
-export class MarketStatus {
+export interface MarketStatus {
   market: MarketStatusExtendedEnum;
   serverTime: Date;
   exchanges: {
@@ -544,7 +571,7 @@ export class MarketStatus {
  * @param image?	URL of the image for this article, if found
  * @param timestamp	Timestamp of the article
 */
-export class News {
+export interface News {
   symbols: Array<StockSymbol>;
   title: string;
   url: string;
@@ -565,7 +592,7 @@ export class News {
  * @param aS	Ask Size
  * @param t	Timestamp of this trade
 */
-export class StockQuote { // TODO dynamic typeclass? this class is unnecessary
+export interface StockQuote { // TODO dynamic typeclass? this class is unnecessary
   c: number;
   bE: string;
   aE: string;
@@ -577,7 +604,7 @@ export class StockQuote { // TODO dynamic typeclass? this class is unnecessary
 }
 
 // TODO typeclass summary
-export class HistoricStockQuote extends Historic<StockQuote> {
+export interface HistoricStockQuote extends Historic<StockQuote> {
   map: {
     aE: "askexchange";
     aP: "askprice";
@@ -590,7 +617,7 @@ export class HistoricStockQuote extends Historic<StockQuote> {
 }
 
 // TODO typeclass summary
-export class HistoricStockTrade extends Historic<trade> {
+export interface HistoricStockTrade extends Historic<trade> {
   map: {
     c1: "condition1",
     c2: "condition2",
@@ -611,7 +638,7 @@ export class HistoricStockTrade extends Historic<trade> {
  * @param month4?	Analyst Ratings at 4 month in the future
  * @param month5?	Analyst Ratings at 5 month in the future
 */
-export class RatingSection {
+export interface RatingSection {
   current: number;
   month1: number;
   month2: number;
@@ -631,7 +658,7 @@ export class RatingSection {
  * @param tofactor	To factor of the split. Used to calculate the split ratio forfactor/tofactor = ratio (eg ½ = 0.5) 
  * @param forfactor	For factor of the split. Used to calculate the split ratio forfactor/tofactor = ratio (eg ½ = 0.5) 
 */
-export class Split {
+export interface Split {
   ticker: TickerSymbol;
   exDate: Date;
   paymentDate: Date;
@@ -643,25 +670,23 @@ export class Split {
 }
 
 // TODO typeclass summary
-export class Splits {
-  status: string;
+export interface Splits extends aggregateResponse<Split> {
   count: number;
-  results: Array<Split>;
 }
 
 /**
  * An actual exchange symbol this item is traded under.
 */
-export class StockSymbol { }
+export interface StockSymbol { }
 
-export class StocksSnapshotAgg extends Snapshot {
+export interface StocksSnapshotAgg extends Snapshot {
 }
 
 /**
  * @param p	Price of this book level
  * @param x	Exchange to Size of this price level
 */
-export class StocksSnapshotBookItem {
+export interface StocksSnapshotBookItem {
   p: number;
   x: any;
 }
@@ -675,7 +700,7 @@ export class StocksSnapshotBookItem {
  * @param spread?	Difference between the best bid and the best ask price accross exchanges
  * @param updated	Last Updated timestamp
 */
-export class StocksSnapshotTickerBook {
+export interface StocksSnapshotTickerBook {
   ticker: string;
   bids?: Array<StocksSnapshotBookItem>;
   asks?: Array<StocksSnapshotBookItem>;
@@ -692,7 +717,7 @@ export class StocksSnapshotTickerBook {
  * @param updated	Last time this company record was updated.
  * @param isOTC	If the symbol is listed on the OTC Markets.
 */
-export class Symbol {
+export interface Symbol {
   symbol: StockSymbol;
   name: string;
   type: string;
@@ -701,7 +726,7 @@ export class Symbol {
   isOTC: boolean;
 }
 
-export class SymbolTypeMap {
+export interface SymbolTypeMap {
 }
 
 /**
@@ -715,7 +740,7 @@ export class SymbolTypeMap {
  * @param updated	Last time this ticker record was updated.
  * @param attrs?	Additional details about this ticker. No schema.
 */
-export class Ticker {
+export interface Ticker {
   ticker: StockSymbol;
   name: string;
   market: string;
@@ -730,16 +755,16 @@ export class Ticker {
 }
 
 // TODO typeclass summary
-export class TickerTypes {
+export interface TickerTypes {
   status: string;
   results: {
-    types: {
+    types: { // TODO move to enums
       CS: "Common Stock";
       ADR: "American Depository Receipt";
       NVDR: "Non-Voting Depository Receipt"
       GDR: "Global Depositary Receipt";
-    }; // FIXME how do cryptos show up in /reference/types
-    indexTypes: {
+    }; // ? how do cryptos show up in /reference/types
+    indexTypes: { // TODO move to enums
       INDEX: "Index";
       ETF: "Exchange Traded Fund (ETF)";
       ETN: "Exchange Traded Note (ETN)";
@@ -747,6 +772,7 @@ export class TickerTypes {
   }
 }
 
+// ? how are subproperties referenced in @params
 /**
  * Additional details about this ticker. No schema.
  *
@@ -756,7 +782,7 @@ export class TickerTypes {
  * @param scfigi?	Shared Class OpenFIGI number for this ticker
  * @param figiuid?	Unique OpenFIGI ID number for this ticker
 */
-export class TickerCodes {
+export interface TickerCodes {
   cik?: string;
   figi?: string;
   cfigi?: string;
@@ -767,7 +793,7 @@ export class TickerCodes {
 /**
  * An actual exchange traded ticker.
 */
-export class TickerSymbol {
+export interface TickerSymbol {
 }
 
 /**
@@ -780,7 +806,7 @@ export class TickerSymbol {
  * @param s	Size of the trade
  * @param t	Timestamp of this trade
 */
-export class trade {
+export interface trade {
   c1: number;
   c2: number;
   c3: number;

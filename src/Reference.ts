@@ -1,5 +1,5 @@
-import polygon from "./polygon";
-import { MarketStatus, MarketHoliday, Locales, Markets, Splits, Ticker, TickerTypes } from "./types"
+import polygon from "./polygon"; // eslint-disable-line
+import { MarketStatus, MarketHoliday, Locales, Markets, Splits, Ticker, TickerTypes } from "./types/polygon"; // eslint-disable-line
 
 export default class Reference extends polygon {
   /**
@@ -15,7 +15,7 @@ export default class Reference extends polygon {
    * @summary Market Holidays
    */
   public async marketHolidays() : Promise<MarketHoliday> {
-    return this.get<MarketHoliday>('/v1/marketstatus/upcoming');
+    return this.get<MarketHoliday>('/v1/marketstatus/upcoming'); 
   }
 
   /**
@@ -23,7 +23,7 @@ export default class Reference extends polygon {
    * @summary Locales
    */
   public async locales() : Promise<Locales> {
-    return this.get<Locales>('/v2/reference/locales');
+    return this.get<Locales>('/v2/reference/locales'); 
   }
 
   /**
@@ -31,8 +31,9 @@ export default class Reference extends polygon {
    * @summary Markets
    */
   public async markets() : Promise<Markets> {
-    return this.get<Markets>('/v2/reference/markets');
+    return this.get<Markets>('/v2/reference/markets'); 
   }
+
   /**
    * Get the historical splits for this symbol. 
    * @summary Splits
@@ -55,7 +56,7 @@ export default class Reference extends polygon {
    * @param active Filter for only active or inactive symbols 
    */
     public async allTickers() : Promise<Array<Ticker>> {
-    return this.get<Array<Ticker>>('/v2/reference/tickers');
+    return this.get<Array<Ticker>>('/v2/reference/tickers'); 
   }
 
   /**
@@ -63,6 +64,6 @@ export default class Reference extends polygon {
    * @summary Types Mapping
    */  
   public async tickerTypes() : Promise<TickerTypes> {
-    return this.get<TickerTypes>('/v2/reference/types');
+    return this.get<TickerTypes>('/v2/reference/types'); 
   }
 }
