@@ -22,11 +22,11 @@
   },
   "homepage": "https://github.com/arjd/polygonWrapper#readme",
   "dependencies": {
-    "@types/axios": "^0.14.0",
     "@types/dotenv": "^6.1.0",
     "@types/eventsource": "^1.1.0",
     "@types/superagent": "^4.1.0",
-    "axios": "^0.18.0"
+    "superagent-retry-delay": "^2.3.0",
+    "superagent-throttle": "^1.0.1"
   },
   "devDependencies": {
     "ts-node": "^8.0.3",
