@@ -4,7 +4,11 @@
   "description": "a typescript wrapper for the polygon.io api",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "test": "jest",
+    "prepare": "npm run build",
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
@@ -13,7 +17,8 @@
   "keywords": [
     "typescript",
     "polygon.io",
-    "javascript"
+    "javascript",
+    "financial data"
   ],
   "author": "arjd",
   "license": "MIT",
