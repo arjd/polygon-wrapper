@@ -1,6 +1,6 @@
 {
-  "name": "polygonwrapper",
-  "version": "1.0.0",
+  "name": "polygon-wrapper",
+  "version": "1.0.0-alpha ",
   "description": "a typescript wrapper for the polygon.io api",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arjd/polygonWrapper.git"
+    "url": "git+https://github.com/arjd/polygon-wrapper.git"
   },
   "keywords": [
     "typescript",
@@ -23,9 +23,9 @@
   "author": "arjd",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/arjd/polygonWrapper/issues"
+    "url": "https://github.com/arjd/polygon-wrapper/issues"
   },
-  "homepage": "https://github.com/arjd/polygonWrapper#readme",
+  "homepage": "https://github.com/arjd/polygon-wrapper#readme",
   "dependencies": {
     "@types/axios": "^0.14.0",
     "@types/dotenv": "^6.1.0",
